@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../Context/UserContext";
 import { motion } from "framer-motion";
-import { FiSearch, FiBookOpen, FiStar, FiClock, FiTrendingUp, FiArrowRight } from "react-icons/fi";
+import { FiSearch, FiBookOpen, FiStar, FiClock, FiTrendingUp, FiArrowRight, FiAward, FiUsers, FiBookmark, FiBook } from "react-icons/fi";
 
 // Animation variants
 const container = {
@@ -51,7 +51,7 @@ const Home = () => {
       author: 'John Doe',
       price: 24.99,
       rating: 4.8,
-      image: 'https://source.unsplash.com/random/400x600/?book-cover,novel'
+      // image: 'https://source.unsplash.com/random/400x600/?book-cover,novel'
     },
     {
       _id: 2,
@@ -82,13 +82,13 @@ const Home = () => {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
+      <motion.section 
+        className="relative py-20 md:py-32 overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative overflow-hidden"
+        transition={{ duration: 0.6 }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 -skew-y-3 transform origin-top-left"></div>
         
@@ -189,7 +189,7 @@ const Home = () => {
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </motion.section>
 
       {/* Categories Section */}
       <motion.section 
@@ -287,11 +287,11 @@ const Home = () => {
                   <div className="relative pb-[150%] overflow-hidden">
                     <img 
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
-                      src={book?.image || 'https://via.placeholder.com/300x450?text=Book+Cover'} 
+                      src={book?.image || 'Hello'} 
                       alt={book?.title || 'Book Cover'}
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = 'https://via.placeholder.com/300x450?text=Book+Cover';
+                        e.target.src = '';
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
@@ -510,6 +510,184 @@ const Home = () => {
               repeatType: "reverse",
             }}
           />
+        </div>
+      </motion.section>
+
+      {/* Testimonials */}
+      <motion.section 
+        className="py-20 bg-gradient-to-br from-gray-50 to-indigo-50"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="container mx-auto px-6">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">What Our Readers Say</h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">Don't just take our word for it. Here's what our community has to say about their experience.</p>
+          </motion.div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: "Bookify has completely transformed my reading habits. The selection is incredible and the recommendations are always on point.",
+                author: "Sarah Johnson",
+                role: "Avid Reader"
+              },
+              {
+                quote: "I love how easy it is to discover new books and authors. The user experience is seamless and the delivery is always prompt.",
+                author: "Michael Chen",
+                role: "Book Club Organizer"
+              },
+              {
+                quote: "As a student, I appreciate the affordable prices and the wide range of academic books available. Highly recommended!",
+                author: "Emily Rodriguez",
+                role: "University Student"
+              }
+            ].map((testimonial, index) => (
+              <motion.div 
+                key={index}
+                className="bg-white p-8 rounded-2xl shadow-lg"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <div className="text-amber-400 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <FiStar key={i} className="inline-block w-5 h-5 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-6 italic">"{testimonial.quote}"</p>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg mr-4">
+                    {testimonial.author.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">{testimonial.author}</h4>
+                    <p className="text-sm text-gray-500">{testimonial.role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Stats */}
+      <motion.section 
+        className="py-16 bg-gradient-to-r from-indigo-600 to-purple-700 text-white"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {[
+              { icon: <FiBook className="w-8 h-8 mx-auto mb-4" />, number: "10,000+", label: "Books Available" },
+              { icon: <FiUsers className="w-8 h-8 mx-auto mb-4" />, number: "50,000+", label: "Happy Readers" },
+              { icon: <FiAward className="w-8 h-8 mx-auto mb-4" />, number: "100+", label: "Award Winners" },
+              { icon: <FiBookmark className="w-8 h-8 mx-auto mb-4" />, number: "24/7", label: "Support" }
+            ].map((stat, index) => (
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <div className="text-indigo-100">
+                  {stat.icon}
+                </div>
+                <h3 className="text-3xl md:text-4xl font-bold mb-2">{stat.number}</h3>
+                <p className="text-indigo-100">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* CTA */}
+      <motion.section 
+        className="py-20 bg-white"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="container mx-auto px-6">
+          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-3xl p-12 text-center">
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold text-gray-900 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              Ready to start your reading journey?
+            </motion.h2>
+            <motion.p 
+              className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              Join thousands of readers who trust Bookify for their next great read. Sign up now and get 15% off your first order!
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="flex flex-col sm:flex-row justify-center gap-4"
+            >
+              <Link 
+                to="/signup" 
+                className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-lg hover:shadow-lg transition-all duration-200 text-center"
+              >
+                Get Started - It's Free
+              </Link>
+              <Link 
+                to="/books" 
+                className="px-8 py-4 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 text-center"
+              >
+                Browse Books
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Newsletter */}
+      <motion.section 
+        className="py-16 bg-gray-50"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Stay Updated</h2>
+            <p className="text-gray-600 mb-8">Subscribe to our newsletter for the latest book releases, exclusive offers, and reading recommendations.</p>
+            <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+              <input 
+                type="email" 
+                placeholder="Enter your email" 
+                className="flex-1 px-6 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all duration-200"
+              />
+              <button className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-all duration-200">
+                Subscribe
+              </button>
+            </div>
+          </div>
         </div>
       </motion.section>
     </div>

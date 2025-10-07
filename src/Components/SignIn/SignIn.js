@@ -1,178 +1,357 @@
-import React, { useContext } from "react";
-import GoogleButton from "react-google-button";
-import toast, { Toaster } from "react-hot-toast";
+import React, { useContext, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/UserContext";
-import Lottie from "lottie-react";
-import resale from "../../Images/resale.json";
+import { FiMail, FiLock, FiEye, FiEyeOff, FiArrowLeft, FiBookOpen, FiUserPlus } from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
+import toast from "react-hot-toast";
+import { motion } from "framer-motion";
+
 const SignIn = () => {
-  const { googleSignIn, githubSignIn, userSignIn, loading } =
-    useContext(AuthContext);
+  const { googleSignIn, userSignIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const from = location.state?.from?.pathname || "/";
 
-  // Google Login
-  const handleGoogleLogin = () => {
-    googleSignIn()
-      .then((result) => {
-        const user = result.user;
-        const currentUser = {
-          email: user.email,
-        };
-        fetch("https://server-side-nayem9b.vercel.app/jwt", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
 
-          body: JSON.stringify(currentUser),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-
-            localStorage.setItem("jwt-token", data.token);
-
-            navigate(from, { replace: true });
-          });
-        navigate("/");
-        console.log(user);
-      })
-      .catch((error) => console.log(error));
+  // Animation variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+      },
+    },
   };
 
-  //Email Login
-  const handleEmailLogin = (event) => {
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
+  // Google Login
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await googleSignIn();
+      const user = result.user;
+      const currentUser = { email: user.email };
+      
+      const response = await fetch("https://server-side-nayem9b.vercel.app/jwt", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(currentUser),
+      });
+      
+      const data = await response.json();
+      localStorage.setItem("jwt-token", data.token);
+      navigate(from, { replace: true });
+      toast.success("Successfully signed in with Google!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to sign in with Google");
+    }
+  };
+
+  // Email Login
+  const handleEmailLogin = async (event) => {
     event.preventDefault();
-    const form = event.target;
-    const email = form.email.value;
-    const password = form.password.value;
-    userSignIn(email, password)
-      .then((result) => {
-        const user = result.user;
-        const currentUser = {
-          email: user.email,
-        };
-        fetch("https://server-side-nayem9b.vercel.app/jwt", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-
-          body: JSON.stringify(currentUser),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-
-            localStorage.setItem("jwt-token", data.token);
-
-            navigate(from, { replace: true });
-          });
-        navigate(from, { replace: true });
-        console.log(user);
-      })
-      .catch((error) => console.log(error));
+    setIsSubmitting(true);
+    
+    try {
+      const form = event.target;
+      const email = form.email.value;
+      const password = form.password.value;
+      
+      const result = await userSignIn(email, password);
+      const user = result.user;
+      const currentUser = { email: user.email };
+      
+      const response = await fetch("https://server-side-nayem9b.vercel.app/jwt", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(currentUser),
+      });
+      
+      const data = await response.json();
+      localStorage.setItem("jwt-token", data.token);
+      navigate(from, { replace: true });
+      toast.success("Successfully signed in!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to sign in. Please check your credentials and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div>
-      <section class='relative flex flex-wrap lg:h-screen lg:items-center'>
-        <div class='w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24'>
-          <div class='mx-auto max-w-lg text-center'>
-            <h1 class='text-2xl font-bold sm:text-3xl text-start'>
-              Signin to buy
-              <br /> Book from{" "}
-              <span className='font-extrabold text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 '>
-                Bookify
-              </span>
-            </h1>
-
-            <p class='mt-4 text-gray-500 text-start'>
-              Resale books at affordable price
-            </p>
-          </div>
-
-          <form
-            onSubmit={handleEmailLogin}
-            action=''
-            class='mx-auto mt-8 mb-0 max-w-md space-y-4'>
-            <div>
-              <label for='email' class='sr-only'>
-                Email
-              </label>
-
-              <div class='relative'>
-                <input
-                  type='email'
-                  class='w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm'
-                  placeholder='Enter email'
-                  name='email'
-                />
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+      <motion.div 
+        className="max-w-6xl mx-auto"
+        initial="hidden"
+        animate={isMounted ? "show" : "hidden"}
+        variants={container}
+      >
+        <div className="flex flex-col lg:flex-row items-center justify-center min-h-[85vh] gap-8 lg:gap-16">
+          {/* Left side - Minimal Information Panel */}
+          <motion.div 
+            className="hidden lg:flex flex-1 max-w-xl xl:max-w-2xl"
+            variants={item}
+          >
+            <div className="w-full h-full p-8">
+              <div className="relative w-full h-full rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-700 p-12 overflow-hidden">
+                <div className="absolute inset-0 bg-grid-white/5 [mask-image:linear-gradient(180deg,white,transparent)]"></div>
+                <div className="relative z-10 h-full flex flex-col justify-center">
+                  <div className="mb-12">
+                    <h2 className="text-4xl font-bold text-white mb-4 leading-tight">Welcome Back</h2>
+                    <p className="text-indigo-100 text-lg">Your personal library of knowledge awaits.</p>
+                  </div>
+                  
+                  <div className="space-y-6 mb-12">
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0 mt-1">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-white">Access Anywhere</h3>
+                        <p className="text-indigo-100 text-sm mt-1">Your books on all devices</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0 mt-1">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-white">Curated Collection</h3>
+                        <p className="text-indigo-100 text-sm mt-1">10,000+ titles across genres</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0 mt-1">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-white">Seamless Experience</h3>
+                        <p className="text-indigo-100 text-sm mt-1">Pick up where you left off</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-auto pt-8 border-t border-white/10">
+                    <p className="text-sm text-indigo-200">Join thousands of readers worldwide</p>
+                  </div>
+                </div>
+                
+                <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-indigo-400/20 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+                <div className="absolute -top-40 -left-40 w-80 h-80 bg-purple-400/20 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
               </div>
             </div>
+          </motion.div>
 
-            <div>
-              <label for='password' class='sr-only'>
-                Password
-              </label>
-              <div class='relative'>
-                <input
-                  type='password'
-                  class='w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm'
-                  placeholder='Enter password'
-                  name='password'
-                />
+          {/* Right side - Form */}
+          <motion.div 
+            className="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden border-0"
+            variants={item}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 h-2"></div>
+              <div className="p-8 sm:p-10">
+                <motion.div 
+                  className="text-center mb-8"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <div className="flex items-center justify-center mb-4">
+                    <motion.div 
+                      className="hover:scale-110 transition-transform duration-200"
+                      whileHover={{ rotate: 5, scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <FiBookOpen className="text-4xl bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent" />
+                    </motion.div>
+                    <span className="text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent ml-2">
+                      Bookify
+                    </span>
+                  </div>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+                  <p className="text-gray-500">Sign in to continue your reading journey</p>
+                </motion.div>
+
+                <form onSubmit={handleEmailLogin} className="space-y-6">
+                  <motion.div 
+                    className="space-y-2"
+                    variants={item}
+                  >
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      Email address
+                    </label>
+                    <motion.div 
+                      className="relative"
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                    >
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <FiMail className="h-5 w-5 text-indigo-500" />
+                      </div>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        required
+                        className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl bg-white/80 focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-none transition-all duration-200 placeholder-gray-400 text-gray-700 shadow-sm"
+                        placeholder="you@example.com"
+                      />
+                    </motion.div>
+                  </motion.div>
+
+                  <motion.div 
+                    className="space-y-2"
+                    variants={item}
+                  >
+                    <div className="flex items-center justify-between">
+                      <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                        Password
+                      </label>
+                      <div className="text-sm">
+                        <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                          Forgot password?
+                        </a>
+                      </div>
+                    </div>
+                    <motion.div 
+                      className="relative"
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                    >
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <FiLock className="h-5 w-5 text-indigo-500" />
+                      </div>
+                      <input
+                        id="password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        autoComplete="current-password"
+                        required
+                        className="block w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl bg-white/80 focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-none transition-all duration-200 placeholder-gray-400 text-gray-700 shadow-sm"
+                        placeholder="••••••••"
+                      />
+                      <motion.button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-600 transition-colors"
+                        onClick={() => setShowPassword(!showPassword)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        {showPassword ? (
+                          <FiEyeOff className="h-5 w-5" />
+                        ) : (
+                          <FiEye className="h-5 w-5" />
+                        )}
+                      </motion.button>
+                    </motion.div>
+                  </motion.div>
+
+                  <motion.div 
+                    className="pt-2"
+                    variants={item}
+                  >
+                    <motion.button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className={`w-full flex justify-center py-3.5 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-md ${
+                        isSubmitting ? 'opacity-80 cursor-not-allowed' : 'hover:shadow-lg'
+                      }`}
+                      whileHover={!isSubmitting ? { scale: 1.01 } : {}}
+                      whileTap={!isSubmitting ? { scale: 0.99 } : {}}
+                    >
+                      {isSubmitting ? (
+                        <div className="flex items-center">
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Signing in...
+                        </div>
+                      ) : (
+                        <span>Sign in to your account</span>
+                      )}
+                    </motion.button>
+                  </motion.div>
+                </form>
+
+                <motion.div 
+                  className="mt-8"
+                  variants={item}
+                >
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div className="relative flex justify-center">
+                      <span className="px-3 bg-white text-sm text-gray-500 font-medium">Or continue with</span>
+                    </div>
+                  </div>
+
+                  <motion.div 
+                    className="mt-6"
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                  >
+                    <button
+                      onClick={handleGoogleLogin}
+                      className="w-full flex items-center justify-center py-3 px-4 border border-gray-200 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-100 transition-all duration-200 hover:shadow-md"
+                    >
+                      <FcGoogle className="h-5 w-5 mr-2" />
+                      Sign in with Google
+                    </button>
+                  </motion.div>
+                </motion.div>
+
+                <motion.div 
+                  className="mt-8 text-center text-sm"
+                  variants={item}
+                >
+                  <p className="text-gray-600">
+                    Don't have an account?{' '}
+                    <Link 
+                      to="/signup" 
+                      className="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline transition-colors duration-200"
+                    >
+                      <FiUserPlus className="inline mr-1" /> Create an account
+                    </Link>
+                  </p>
+                  
+                  <motion.div 
+                    className="mt-6"
+                    whileHover={{ x: -2 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
+                    <Link 
+                      to="/" 
+                      className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-indigo-600 transition-colors duration-200"
+                    >
+                      <FiArrowLeft className="mr-1" /> Back to home
+                    </Link>
+                  </motion.div>
+                </motion.div>
               </div>
             </div>
-
-            <div class='flex items-center justify-between'>
-              <p class='text-sm text-gray-500'>
-                No account?
-                <Link to='/signup' class='underline ml-2'>
-                  Sign up
-                </Link>
-              </p>
-
-              <button
-                type='submit'
-                class='ml-3 inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white'>
-                Sign in
-              </button>
-            </div>
-            <div className='flex justify-between'>
-              <button
-                onClick={handleGoogleLogin}
-                type='button'
-                class='text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2'>
-                <svg
-                  class='mr-2 -ml-1 w-4 h-4'
-                  aria-hidden='true'
-                  focusable='false'
-                  data-prefix='fab'
-                  data-icon='google'
-                  role='img'
-                  xmlns='http://www.w3.org/2000/svg'
-                  viewBox='0 0 488 512'>
-                  <path
-                    fill='currentColor'
-                    d='M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z'></path>
-                </svg>
-                Sign in with Google
-              </button>
-            </div>
-          </form>
+          </motion.div>
         </div>
-
-        <div class='relative h-64 w-full sm:h-96 lg:h-full lg:w-1/2'>
-          <div className='flex lg:block sm:hidden justify-center items-center'>
-            <Lottie animationData={resale} loop={true} />
-          </div>
-        </div>
-      </section>
-
-      <Toaster />
+      </motion.div>
     </div>
   );
 };
