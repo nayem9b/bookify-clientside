@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../Context/UserContext";
 import { motion } from "framer-motion";
 import { FiSearch, FiBookOpen, FiStar, FiClock, FiTrendingUp, FiArrowRight, FiAward, FiUsers, FiBookmark, FiBook } from "react-icons/fi";
+import reading from "../../Images/reading.jpg"
 
 // Animation variants
 const container = {
@@ -59,7 +60,7 @@ const Home = () => {
       author: 'Jane Smith',
       price: 19.99,
       rating: 4.5,
-      image: 'https://source.unsplash.com/random/400x600/?book,technology'
+      // image: 'https://source.unsplash.com/random/400x600/?book,technology'
     },
     {
       _id: 3,
@@ -67,7 +68,7 @@ const Home = () => {
       author: 'Alex Johnson',
       price: 29.99,
       rating: 4.9,
-      image: 'https://source.unsplash.com/random/400x600/?mystery,book'
+      // image: 'https://source.unsplash.com/random/400x600/?mystery,book'
     },
     {
       _id: 4,
@@ -75,7 +76,7 @@ const Home = () => {
       author: 'Sam Wilson',
       price: 34.99,
       rating: 4.7,
-      image: 'https://source.unsplash.com/random/400x600/?ai,technology'
+      // image: 'https://source.unsplash.com/random/400x600/?ai,technology'
     }
   ];
 
@@ -175,11 +176,11 @@ const Home = () => {
             <div className="relative">
               <div className="absolute -top-6 -left-6 w-full h-full bg-yellow-400 rounded-2xl -z-10"></div>
               <div className="relative bg-white p-2 rounded-xl shadow-2xl transform rotate-2">
-                <img 
-                  src="https://source.unsplash.com/random/500x700/?book,reading" 
-                  alt="Book showcase" 
-                  className="rounded-lg w-full h-auto shadow-lg"
-                />
+            <img
+                  src={reading}
+                  alt="Reading"
+                  className="rounded-lg max-w-sm w-full h-auto shadow-lg"/>
+  
                 <div className="absolute -bottom-4 -right-4 bg-white p-3 rounded-full shadow-xl">
                   <div className="bg-indigo-600 text-white p-2 rounded-full">
                     <FiBookOpen className="h-6 w-6" />
@@ -219,21 +220,61 @@ const Home = () => {
             viewport={{ once: true }}
           >
             {categories?.map((category, index) => (
-              <motion.div 
+              <motion.div
                 key={category?._id || index}
                 variants={item}
-                whileHover={{ y: -5, boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)' }}
-                className="group"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                whileHover="hover"
+                className="relative group"
               >
-                <Link 
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500 group-hover:duration-200"></div>
+                <Link
                   to={`/category/${category?.name?.toLowerCase() || 'all'}`}
-                  className="block p-6 bg-white rounded-2xl hover:shadow-xl transition-all duration-300 text-center border border-gray-100 h-full"
+                  className="relative block p-6 bg-white dark:bg-gray-800 rounded-2xl h-full text-center border-2 border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
-                  <div className="w-20 h-20 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <FiBookOpen className="h-8 w-8 text-indigo-600" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 text-lg">{category?.name || 'Uncategorized'}</h3>
-                  <p className="text-sm text-gray-500 mt-1">{category?.count || 0} books</p>
+                  <motion.div 
+                    className="w-24 h-24 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 relative shadow-inner"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-200 to-purple-200 dark:from-indigo-800/40 dark:to-purple-800/40 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <FiBookOpen className="h-12 w-12 text-indigo-700 dark:text-indigo-300 z-10" />
+                    <motion.div 
+                      className="absolute -inset-1 bg-gradient-to-r from-indigo-200 to-purple-200 dark:from-indigo-600/30 dark:to-purple-600/30 rounded-full blur opacity-0 group-hover:opacity-100 transition duration-1000"
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      whileHover={{ scale: 1.2, opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </motion.div>
+                  
+                  <motion.h3 
+                    className="font-bold text-gray-900 dark:text-white text-xl mb-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent"
+                    initial={{ y: 10, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 + (index * 0.05) }}
+                  >
+                    {category?.name || 'Uncategorized'}
+                  </motion.h3>
+                  
+                  <motion.p 
+                    className="text-sm text-gray-500 dark:text-gray-300 font-medium px-2 py-1 bg-gray-50 dark:bg-gray-700/50 rounded-full inline-flex items-center"
+                    initial={{ y: 10, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 + (index * 0.05) }}
+                  >
+                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-1.5"></span>
+                    {category?.count || 0} {category?.count === 1 ? 'book' : 'books'}
+                  </motion.p>
+                  
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                  />
                 </Link>
               </motion.div>
             ))}

@@ -7,12 +7,12 @@ const CategoryCard = ({ category }) => {
   const { name, description, to, image } = category;
   return (
     <div>
-      <Link to={user ? `${to}` : `/signin`} class='block'>
-        <img alt='Art' src={image} class='h-96 w-80 object-cover' />
+      <Link to={user ? `${to}` : `/signin`} className='block'>
+        <img alt='Art' src={image} className='h-96 w-80 object-cover' />
 
-        <h3 class='mt-4 text-xl font-bold text-gray-900'>{name}</h3>
+        <h3 className='mt-4 text-xl font-bold text-gray-900'>{name}</h3>
 
-        <p class='mt-2 w-80 text-gray-700'>{description}</p>
+        <p className='mt-2 w-80 text-gray-700'>{description}</p>
       </Link>
     </div>
   );

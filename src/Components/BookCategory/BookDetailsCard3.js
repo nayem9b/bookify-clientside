@@ -67,11 +67,11 @@ const BookDetailsCard3 = ({ book, setItem, setPrice }) => {
             {!isAdmin && (
               <div className='grid grid-cols-2 gap-2 '>
                 <button
-                  class='group relative inline-block overflow-hidden border border-indigo-600 px-4 py-3 focus:outline-none focus:ring'
+                  className='group relative inline-block overflow-hidden border border-indigo-600 px-4 py-3 focus:outline-none focus:ring'
                   onClick={handleAddToWishlist}>
-                  <span class='absolute inset-y-0 left-0 w-[2px] bg-indigo-600 transition-all group-hover:w-full group-active:bg-indigo-500'></span>
+                  <span className='absolute inset-y-0 left-0 w-[2px] bg-indigo-600 transition-all group-hover:w-full group-active:bg-indigo-500'></span>
 
-                  <span class='relative text-sm font-medium text-indigo-600 transition-colors group-hover:text-white'>
+                  <span className='relative text-sm font-medium text-indigo-600 transition-colors group-hover:text-white'>
                     Wishlist
                   </span>
                 </button>

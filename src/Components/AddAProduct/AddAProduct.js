@@ -81,22 +81,22 @@ const AddAProduct = () => {
   };
   return (
     <div className='relative'>
-      <section class='bg-gray-100'>
+      <section className='bg-gray-100'>
         <h1 className='px-8 text-3xl'>Add a product</h1>
-        <div class='mx-auto max-w-screen-xl px-4 py-6 sm:px-6 lg:px-8'>
-          <div class='grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-5'>
-            <div class='rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12'>
-              <form action='' onSubmit={handleSubmitProduct} class='space-y-4'>
+        <div className='mx-auto max-w-screen-xl px-4 py-6 sm:px-6 lg:px-8'>
+          <div className='grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-5'>
+            <div className='rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12'>
+              <form action='' onSubmit={handleSubmitProduct} className='space-y-4'>
                 <div>
                   <h1>
                     Name of the book
                     <span className='text-red-600 text-lg'>*</span>
                   </h1>
-                  <label class='sr-only' for='name'>
+                  <label className='sr-only' for='name'>
                     Name
                   </label>
                   <input
-                    class='w-full rounded-lg border-gray-200 p-3 text-sm'
+                    className='w-full rounded-lg border-gray-200 p-3 text-sm'
                     name='name'
                     type='text'
                     required
@@ -121,11 +121,11 @@ const AddAProduct = () => {
                     Price
                     <span className='text-red-600 text-lg'>*</span>
                   </h1>
-                  <label class='sr-only' for='name'>
+                  <label className='sr-only' for='name'>
                     Price
                   </label>
                   <input
-                    class='w-full rounded-lg border-gray-200 p-3 text-sm'
+                    className='w-full rounded-lg border-gray-200 p-3 text-sm'
                     //   placeholder={user.displayName}
                     type='text'
                     name='price'
@@ -138,21 +138,21 @@ const AddAProduct = () => {
                     <span className='text-red-600 text-lg'>*</span>
                   </h1>
 
-                  <fieldset class='flex flex-wrap gap-3'>
+                  <fieldset className='flex flex-wrap gap-3'>
                     <div>
                       <input
                         type='radio'
                         name='ColorOption'
                         value='Excillent'
                         id='ColorBlack'
-                        class='peer hidden'
+                        className='peer hidden'
                         onClick={(e) => setCondition(e.target.value)}
                       />
 
                       <label
                         for='ColorBlack'
-                        class='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
-                        <p class='text-sm font-medium'>Excillent</p>
+                        className='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
+                        <p className='text-sm font-medium'>Excillent</p>
                       </label>
                     </div>
 
@@ -162,14 +162,14 @@ const AddAProduct = () => {
                         name='ColorOption'
                         value='Good'
                         id='ColorRed'
-                        class='peer hidden'
+                        className='peer hidden'
                         onClick={(e) => setCondition(e.target.value)}
                       />
 
                       <label
                         for='ColorRed'
-                        class='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
-                        <p class='text-sm font-medium'>Good</p>
+                        className='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
+                        <p className='text-sm font-medium'>Good</p>
                       </label>
                     </div>
 
@@ -179,14 +179,14 @@ const AddAProduct = () => {
                         name='ColorOption'
                         value='Fair'
                         id='ColorBlue'
-                        class='peer hidden'
+                        className='peer hidden'
                         onClick={(e) => setCondition(e.target.value)}
                       />
 
                       <label
                         for='ColorBlue'
-                        class='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
-                        <p class='text-sm font-medium'>Fair</p>
+                        className='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
+                        <p className='text-sm font-medium'>Fair</p>
                       </label>
                     </div>
 
@@ -196,14 +196,14 @@ const AddAProduct = () => {
                         name='ColorOption'
                         value='Torn'
                         id='ColorGold'
-                        class='peer hidden'
+                        className='peer hidden'
                         onClick={(e) => setCondition(e.target.value)}
                       />
 
                       <label
                         for='ColorGold'
-                        class='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
-                        <p class='text-sm font-medium'>Torn</p>
+                        className='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
+                        <p className='text-sm font-medium'>Torn</p>
                       </label>
                     </div>
                   </fieldset>
@@ -214,21 +214,21 @@ const AddAProduct = () => {
                     <span className='text-red-600 text-lg'>*</span>
                   </h1>
 
-                  <fieldset class='flex flex-wrap gap-3'>
+                  <fieldset className='flex flex-wrap gap-3'>
                     <div>
                       <input
                         type='radio'
                         name='action_and_adventure'
                         value='action_and_adventure'
                         id='action_and_adventure'
-                        class='peer hidden'
+                        className='peer hidden'
                         onClick={(e) => setCategory(e.target.value)}
                       />
 
                       <label
                         for='action_and_adventure'
-                        class='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
-                        <p class='text-sm font-medium'>Action and Adventure</p>
+                        className='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
+                        <p className='text-sm font-medium'>Action and Adventure</p>
                       </label>
                     </div>
 
@@ -238,14 +238,14 @@ const AddAProduct = () => {
                         name='classics'
                         value='classics'
                         id='classics1'
-                        class='peer hidden'
+                        className='peer hidden'
                         onClick={(e) => setCategory(e.target.value)}
                       />
 
                       <label
                         for='classics1'
-                        class='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
-                        <p class='text-sm font-medium'>Classics</p>
+                        className='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
+                        <p className='text-sm font-medium'>Classics</p>
                       </label>
                     </div>
 
@@ -255,14 +255,14 @@ const AddAProduct = () => {
                         name='memoir'
                         value='memoir'
                         id='memoir'
-                        class='peer hidden'
+                        className='peer hidden'
                         onClick={(e) => setCategory(e.target.value)}
                       />
 
                       <label
                         for='memoir'
-                        class='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
-                        <p class='text-sm font-medium'>Memoir</p>
+                        className='flex cursor-pointer items-center justify-center rounded-md border border-gray-100 py-2 px-3 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white'>
+                        <p className='text-sm font-medium'>Memoir</p>
                       </label>
                     </div>
                   </fieldset>
@@ -272,11 +272,11 @@ const AddAProduct = () => {
                     Mobile Number{" "}
                     <span className='text-red-600 text-lg'>*</span>
                   </h1>
-                  <label class='sr-only' for='name'>
+                  <label className='sr-only' for='name'>
                     Mobile Number
                   </label>
                   <input
-                    class='w-full rounded-lg border-gray-200 p-3 text-sm'
+                    className='w-full rounded-lg border-gray-200 p-3 text-sm'
                     type='text'
                     name='mobileNumber'
                     required
@@ -285,21 +285,21 @@ const AddAProduct = () => {
                 <h1>
                   Location <span className='text-red-600 text-lg'>*</span>
                 </h1>
-                <fieldset class='grid grid-cols-3 gap-4'>
+                <fieldset className='grid grid-cols-3 gap-4'>
                   <div>
                     <input
                       type='radio'
                       name='DeliveryOption'
                       value='Dhaka'
                       id='DeliveryStandard'
-                      class='peer hidden'
+                      className='peer hidden'
                       onClick={(e) => setPlace(e.target.value)}
                     />
 
                     <label
                       for='DeliveryStandard'
-                      class='block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500'>
-                      <p class='text-gray-700'>Dhaka</p>
+                      className='block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500'>
+                      <p className='text-gray-700'>Dhaka</p>
                     </label>
                   </div>
 
@@ -309,14 +309,14 @@ const AddAProduct = () => {
                       name='DeliveryOption'
                       value='Chittagong'
                       id='DeliveryPriority'
-                      class='peer hidden'
+                      className='peer hidden'
                       onClick={(e) => setPlace(e.target.value)}
                     />
 
                     <label
                       for='DeliveryPriority'
-                      class='block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500'>
-                      <p class='text-gray-700'>Chittagong</p>
+                      className='block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500'>
+                      <p className='text-gray-700'>Chittagong</p>
                     </label>
                   </div>
                   <div>
@@ -325,24 +325,24 @@ const AddAProduct = () => {
                       name='DeliveryOption'
                       value='Khulna'
                       id='Khulna'
-                      class='peer hidden'
+                      className='peer hidden'
                       onClick={(e) => setPlace(e.target.value)}
                     />
 
                     <label
                       for='Khulna'
-                      class='block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500'>
-                      <p class='text-gray-700'>Khulna</p>
+                      className='block cursor-pointer rounded-lg border border-gray-100 p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500'>
+                      <p className='text-gray-700'>Khulna</p>
                     </label>
                   </div>
                 </fieldset>
                 <div>
                   <h1>Original Bought Price</h1>
-                  <label class='sr-only' for='name'>
+                  <label className='sr-only' for='name'>
                     Original Bought Price
                   </label>
                   <input
-                    class='w-full rounded-lg border-gray-200 p-3 text-sm'
+                    className='w-full rounded-lg border-gray-200 p-3 text-sm'
                     name='originalPrice'
                     type='text'
                     required
@@ -353,11 +353,11 @@ const AddAProduct = () => {
                   <h1>
                     Description <span className='text-red-600 text-lg'>*</span>
                   </h1>
-                  <label class='sr-only' for='message'>
+                  <label className='sr-only' for='message'>
                     Message
                   </label>
                   <textarea
-                    class='w-full rounded-lg border-gray-200 p-3 text-sm'
+                    className='w-full rounded-lg border-gray-200 p-3 text-sm'
                     placeholder='Description of the product'
                     rows='8'
                     name='description'
@@ -365,15 +365,15 @@ const AddAProduct = () => {
                     id='message'></textarea>
                 </div>
 
-                <div class='mt-4'>
+                <div className='mt-4'>
                   <button
                     type='submit'
-                    class='inline-flex w-full items-center justify-center rounded-lg bg-black px-5 py-3 text-white sm:w-auto'>
-                    <span class='font-medium'> Publish your product </span>
+                    className='inline-flex w-full items-center justify-center rounded-lg bg-black px-5 py-3 text-white sm:w-auto'>
+                    <span className='font-medium'> Publish your product </span>
 
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
-                      class='ml-3 h-5 w-5'
+                      className='ml-3 h-5 w-5'
                       fill='none'
                       viewBox='0 0 24 24'
                       stroke='currentColor'>
