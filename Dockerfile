@@ -1,32 +1,37 @@
-# Build stage
-FROM node:18-alpine as build
+# -------- Stage 1: Builder --------
+FROM node:18-alpine AS builder
 
-# Set working directory
-WORKDIR /app
+WORKDIR /myapp
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy dependency manifests
+COPY package.json yarn.lock ./
 
-# Install dependencies with legacy peer deps
-RUN npm install --legacy-peer-deps
+# Install dependencies (with legacy peer deps for compatibility)
+RUN yarn install --frozen-lockfile --non-interactive --no-progress --legacy-peer-deps
 
-# Copy the rest of the application
+# Copy source code
 COPY . .
 
-# Build the application with production optimizations
-RUN npm run build
+# Build the React app (creates /myapp/build)
+RUN yarn build
 
-# Production stage
-FROM nginx:stable-alpine
 
-# Copy the built app from the build stage
-COPY --from=build /app/build /usr/share/nginx/html
+# -------- Stage 2: Runtime --------
+FROM node:18-alpine AS runner
 
-# Copy custom nginx config
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+# Use lightweight static file server
+RUN yarn global add serve --non-interactive --no-progress
 
-# Expose port 80
-EXPOSE 80
+WORKDIR /myapp
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Copy build artifacts from builder
+COPY --from=builder /myapp/build ./build
+
+# Create non-root user for security
+RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
+USER nodejs
+
+EXPOSE 5000
+
+# Serve static React build
+CMD ["yarn", "start"]
