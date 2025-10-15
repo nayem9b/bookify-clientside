@@ -15,6 +15,8 @@ const DashboardLayout = () => {
   const [isBuyer] = useBuyer(user?.email);
   const [isSeller] = useSeller(user?.email);
 
+  console.log(user);
+
   const menuItems = [
     {
       title: "Dashboard",

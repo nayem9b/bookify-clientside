@@ -5,7 +5,7 @@ const SimplePage = () => {
   return (
     <div>
       <div className=' flex justify-center '>
-        <Lottie animationData={dashboard} loop={true} />
+       <h1>Hey</h1>
       </div>
     </div>
   );

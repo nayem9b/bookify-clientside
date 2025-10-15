@@ -10,7 +10,7 @@ const BuyerRoute = ({ children }) => {
   const location = useLocation();
 
   if (loading || isBuyerLoading) {
-    return <Loading></Loading>;
+    return <h1> HEY</h1>;
   }
 
   if (user && isBuyer) {

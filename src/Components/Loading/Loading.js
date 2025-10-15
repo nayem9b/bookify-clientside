@@ -5,7 +5,7 @@ const Loading = () => {
   return (
     <div className='flex justify-center items-center'>
       <div className=' flex justify-center '>
-        <Lottie animationData={loading} loop={true} />
+        <h1>Hey</h1>
       </div>
     </div>
   );

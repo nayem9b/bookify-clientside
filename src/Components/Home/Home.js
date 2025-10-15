@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { FiSearch, FiBookOpen, FiStar, FiClock, FiTrendingUp, FiArrowRight, FiAward, FiUsers, FiBookmark, FiBook } from "react-icons/fi";
 import reading from "../../Images/reading.jpg"
 import PartneredWith from "../PartneredWith/partneredWith";
+import ProductCards from "../FeaturedProducts/ProductCard";
 
 // Animation variants
 const container = {
@@ -284,7 +285,7 @@ const Home = () => {
       </motion.section>
 
       {/* Featured Books */}
-      <motion.section 
+      {/* <motion.section 
         className="py-20 bg-gradient-to-br from-gray-50 to-indigo-50"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -381,7 +382,9 @@ const Home = () => {
             ))}
           </motion.div>
         </div>
-      </motion.section>
+      </motion.section> */}
+
+      <ProductCards/>
       
       {/* Partnered with
        */}
