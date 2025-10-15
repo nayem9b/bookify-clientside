@@ -203,7 +203,7 @@ const BooksPage = () => {
                     className="group relative block overflow-hidden rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow duration-300"
                   >
                     <div className="relative">
-                      <Link to={`/book/${book._id || book.id}`}>
+                      <Link to={`/books/${book._id || book.id}`}>
                         <button
                           className="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-red-500"
                           onClick={(e) => {
@@ -243,7 +243,7 @@ const BooksPage = () => {
 
                     <div className="relative border border-gray-100 bg-white p-6">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">{book.title}</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">{book.original_title}</h3>
                         {book.price && (
                           <p className="text-lg font-bold text-indigo-600">
                             ${parseFloat(book.price).toFixed(2)}
