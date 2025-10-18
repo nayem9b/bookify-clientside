@@ -137,26 +137,41 @@ export default function BookDetailsPage() {
           </section>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <motion.button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleAddToCart(book);
-              }}
-              className="flex items-center gap-3 px-5 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              whileHover={{ scale: 1.02 }}
-            >
-              <FaShoppingCart aria-hidden />
-              <span className="font-semibold">Add to Cart</span>
-            </motion.button>
+           <motion.button
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleAddToCart(book);
+  }}
+  whileHover={{ y: -2 }}
+  whileTap={{ scale: 0.98 }}
+  className="relative flex items-center justify-center gap-2 rounded-xl 
+             bg-white text-gray-900 px-5 py-2.5 border border-gray-200 
+             shadow-sm hover:shadow-md hover:border-gray-300 
+             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
+             transition-all duration-200 ease-out"
+>
+  <FaShoppingCart 
+    aria-hidden 
+    className="text-gray-600 transition-transform duration-200 group-hover:scale-110" 
+  />
+  <span className="font-medium tracking-wide">Add to Cart</span>
 
-            <motion.button
+  {/* subtle background motion glow */}
+  <motion.span
+    layoutId="cart-glow"
+    className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/10 to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+  />
+</motion.button>
+
+
+            {/* <motion.button
               onClick={handleCheckout}
               className="px-5 py-3 rounded-xl border border-slate-200 bg-white font-semibold text-slate-900 shadow-sm"
               whileHover={{ scale: 1.02 }}
             >
               Buy Now
-            </motion.button>
+            </motion.button> */}
 
             <button
               aria-label="Add to wishlist"

@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "react-hot-toast";
 import { Listbox } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
+import {
+  CheckIcon,
+  ChevronUpDownIcon,
+  PlusIcon,
+  TrashIcon,
+} from "@heroicons/react/24/solid";
 
 const initialState = {
   book_id: "",
@@ -29,6 +34,8 @@ const initialState = {
   ratings_5: "",
   image_url: "",
   small_image_url: "",
+  // local image file (for upload)
+  image: null,
   category: "",
   price: "",
   rating: "",
@@ -41,6 +48,7 @@ const AddProduct = () => {
   const { token } = useAuth();
   const [form, setForm] = useState(initialState);
   const [submitting, setSubmitting] = useState(false);
+  const [preview, setPreview] = useState("");
 
   const categories = [
     "All",
@@ -84,6 +92,21 @@ const AddProduct = () => {
     });
   };
 
+  const onSelectFile = (e) => {
+    const file = e.target.files && e.target.files[0];
+    setField("image", file || null);
+  };
+
+  useEffect(() => {
+    if (!form.image) {
+      setPreview("");
+      return;
+    }
+    const objectUrl = URL.createObjectURL(form.image);
+    setPreview(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [form.image]);
+
   const addAuthor = () => {
     setForm((s) => {
       if (s.authors.length >= 3) return s;
@@ -101,30 +124,50 @@ const AddProduct = () => {
 
   const validate = () => {
     // basic validation: required fields
-    const required = ["title", "original_title", "isbn", "original_publication_year", "average_rating", "price", "publisher", "category"];
+    const required = [
+      "title",
+      "original_title",
+      "isbn",
+      "original_publication_year",
+      "average_rating",
+      "price",
+      "publisher",
+      "category",
+    ];
     for (const key of required) {
-      if (!form[key] || String(form[key]).trim() === "") return `Field ${key} is required`;
+      if (!form[key] || String(form[key]).trim() === "")
+        return `Field ${key} is required`;
     }
 
     // authors: at least one, max 3, no empty entries
-    if (!Array.isArray(form.authors) || form.authors.length === 0) return "At least one author is required";
+    if (!Array.isArray(form.authors) || form.authors.length === 0)
+      return "At least one author is required";
     if (form.authors.length > 3) return "You can add at most 3 authors";
     for (const a of form.authors) {
-      if (!a || String(a).trim() === "") return "Please fill all author fields or remove empty ones";
+      if (!a || String(a).trim() === "")
+        return "Please fill all author fields or remove empty ones";
     }
 
     // publication year basic check (optional but if provided must be a number)
-  if (isNaN(Number(form.original_publication_year))) return "Publication year must be a number";
+    if (isNaN(Number(form.original_publication_year)))
+      return "Publication year must be a number";
 
     // price must be a positive number
-    if (form.price === "" || isNaN(Number(form.price)) || Number(form.price) < 0) return "Price must be a valid positive number";
+    if (
+      form.price === "" ||
+      isNaN(Number(form.price)) ||
+      Number(form.price) < 0
+    )
+      return "Price must be a valid positive number";
 
     // average rating must be between 0 and 5
     const ar = Number(form.average_rating);
-    if (isNaN(ar) || ar < 0 || ar > 5) return "Average rating must be between 0 and 5";
+    if (isNaN(ar) || ar < 0 || ar > 5)
+      return "Average rating must be between 0 and 5";
 
     // stock between 0 and 100
-    if (form.stock === "" || isNaN(Number(form.stock))) return "Stock must be a number between 0 and 100";
+    if (form.stock === "" || isNaN(Number(form.stock)))
+      return "Stock must be a number between 0 and 100";
     const s = Number(form.stock);
     if (s < 0 || s > 100) return "Stock must be between 0 and 100";
 
@@ -140,7 +183,10 @@ const AddProduct = () => {
     const payload = { ...form };
     // authors array -> comma separated string
     if (Array.isArray(payload.authors)) {
-      payload.authors = payload.authors.filter(Boolean).map((a) => String(a).trim()).join(', ');
+      payload.authors = payload.authors
+        .filter(Boolean)
+        .map((a) => String(a).trim())
+        .join(", ");
     }
     const numericKeys = [
       "book_id",
@@ -320,7 +366,9 @@ const AddProduct = () => {
                   <PlusIcon className="h-4 w-4" />
                   <span>Add Author</span>
                 </button>
-                <p className="text-xs text-gray-500 mt-1">You can add up to 3 authors.</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  You can add up to 3 authors.
+                </p>
               </div>
             </div>
           </label>
@@ -337,25 +385,45 @@ const AddProduct = () => {
             />
           </label>
 
-          
-
-          <label className="block text-sm">
+          <label className="block text-sm z-20">
             <span className="text-gray-700">Language Code</span>
             <div className="mt-1">
-              <Listbox value={form.language_code} onChange={(val) => setField('language_code', val)}>
+              <Listbox
+                value={form.language_code}
+                onChange={(val) => setField("language_code", val)}
+              >
                 <div className="relative">
                   <Listbox.Button className="relative w-full cursor-default rounded border bg-white py-2 pl-3 pr-10 text-left">
-                    <span className="block truncate">{form.language_code || 'Select language'}</span>
+                    <span className="block truncate">
+                      {form.language_code || "Select language"}
+                    </span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                      <ChevronUpDownIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
                     </span>
                   </Listbox.Button>
                   <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded bg-white py-1 text-base shadow-lg">
                     {languages.map((l) => (
-                      <Listbox.Option key={l} value={l} className={({ active }) => `cursor-default select-none relative py-2 pl-10 pr-4 ${active ? 'bg-indigo-100' : ''}`}>
+                      <Listbox.Option
+                        key={l}
+                        value={l}
+                        className={({ active }) =>
+                          `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                            active ? "bg-indigo-100" : ""
+                          }`
+                        }
+                      >
                         {({ selected }) => (
                           <>
-                            <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>{l}</span>
+                            <span
+                              className={`block truncate ${
+                                selected ? "font-medium" : "font-normal"
+                              }`}
+                            >
+                              {l}
+                            </span>
                             {selected ? (
                               <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-600">
                                 <CheckIcon className="h-5 w-5" />
@@ -470,13 +538,32 @@ const AddProduct = () => {
 
         <div className="grid grid-cols-2 gap-4">
           <label className="block text-sm">
-            <span className="text-gray-700">Image URL</span>
-            <input
-              name="image_url"
-              value={form.image_url}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded border px-2 py-1"
-            />
+            <span className="text-gray-700">Cover Image</span>
+            <div className="mt-1">
+              <label className="cursor-pointer inline-block">
+                <div className="w-32 h-44 bg-gray-50 border-2 border-dashed border-gray-200 rounded-lg flex items-center justify-center overflow-hidden hover:border-gray-300 transition-colors">
+                  {preview ? (
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="text-center p-2">
+                      <div className="text-xs text-gray-400 mb-1">PNG, JPG</div>
+                      <div className="text-xs text-gray-600">Upload</div>
+                    </div>
+                  )}
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  onChange={onSelectFile}
+                  className="hidden"
+                />
+              </label>
+            </div>
           </label>
 
           {/* <label className="block text-sm">
@@ -492,20 +579,42 @@ const AddProduct = () => {
           <label className="block text-sm">
             <span className="text-gray-700">Category</span>
             <div className="mt-1">
-              <Listbox value={form.category} onChange={(val) => setField('category', val)}>
+              <Listbox
+                value={form.category}
+                onChange={(val) => setField("category", val)}
+              >
                 <div className="relative">
                   <Listbox.Button className="relative w-full cursor-default rounded border bg-white py-2 pl-3 pr-10 text-left">
-                    <span className="block truncate">{form.category || 'Select category'}</span>
+                    <span className="block truncate">
+                      {form.category || "Select category"}
+                    </span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                      <ChevronUpDownIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
                     </span>
                   </Listbox.Button>
                   <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded bg-white py-1 text-base shadow-lg">
                     {categories.map((c) => (
-                      <Listbox.Option key={c} value={c} className={({ active }) => `cursor-default select-none relative py-2 pl-10 pr-4 ${active ? 'bg-indigo-100' : ''}`}>
+                      <Listbox.Option
+                        key={c}
+                        value={c}
+                        className={({ active }) =>
+                          `cursor-default select-none relative py-2 pl-10 pr-4 ${
+                            active ? "bg-indigo-100" : ""
+                          }`
+                        }
+                      >
                         {({ selected }) => (
                           <>
-                            <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>{c}</span>
+                            <span
+                              className={`block truncate ${
+                                selected ? "font-medium" : "font-normal"
+                              }`}
+                            >
+                              {c}
+                            </span>
                             {selected ? (
                               <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-600">
                                 <CheckIcon className="h-5 w-5" />

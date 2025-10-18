@@ -15,7 +15,7 @@ const BooksPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [showCategories, setShowCategories] = useState(true);
@@ -304,22 +304,22 @@ const BooksPage = () => {
               </div>
             </div>
           )}
-          <div className="text-center mb-12 mt-4 md:mt-24">
+          <div className="text-center mb-8 mt-2 md:mt-12">
             <motion.h1
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: -16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-4xl font-extrabold text-gray-900 sm:text-5xl lg:text-6xl"
+              className="text-3xl font-semibold text-gray-900 sm:text-4xl lg:text-5xl tracking-tight"
             >
-              Our Book Collection
+              Book Collection
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="mt-5 max-w-xl mx-auto text-xl text-gray-500"
+              className="mt-3 max-w-lg mx-auto text-base text-gray-500"
             >
-              Discover a world of knowledge and adventure
+              Browse and discover your next read from our curated library.
             </motion.p>
           </div>
 
@@ -438,53 +438,38 @@ const BooksPage = () => {
                     <motion.div
                       key={book._id || book.id}
                       variants={item}
-                      className="group relative overflow-hidden bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+                      className="group relative overflow-hidden bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200"
                     >
-                      <div className="relative aspect-[3/4] overflow-hidden">
-                        <Link to={`/books/${book._id || book.id}`}>
+                      <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
+                        <Link to={`/books/${book._id || book.id}`} aria-label={`View ${book.original_title}`}>
                           <motion.img
-                            src={
-                              book.image_url ||
-                              "https://via.placeholder.com/300x400?text=No+Image"
-                            }
+                            src={book.image_url || "https://via.placeholder.com/300x400?text=No+Image"}
                             alt={book.title || "Book cover"}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
                             loading="lazy"
                             onError={(e) => {
                               e.target.onerror = null;
-                              e.target.src =
-                                "https://via.placeholder.com/300x400?text=No+Image";
+                              e.target.src = "https://via.placeholder.com/300x400?text=No+Image";
                             }}
                           />
                         </Link>
 
-                        {/* Wishlist button */}
+                        {/* Quiet wishlist icon (appear softly) */}
                         <button
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
                             // Add to wishlist handler
                           }}
-                          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 text-slate-700 hover:text-red-600 shadow-sm transition-all duration-200 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 text-slate-600 hover:text-red-500 shadow-sm transition-opacity duration-200 opacity-0 group-hover:opacity-90"
                           aria-label="Add to wishlist"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.8"
-                            stroke="currentColor"
-                            className="w-5 h-5"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                            />
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.6" stroke="currentColor" className="w-4 h-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                           </svg>
                         </button>
 
-                        {/* Add to cart button - appears on hover */}
+                        {/* Subtle add to cart button */}
                         <button
                           type="button"
                           onClick={(e) => {
@@ -492,41 +477,39 @@ const BooksPage = () => {
                             e.stopPropagation();
                             handleAddToCart(book);
                           }}
-                          className="absolute bottom-4 right-4 z-10 p-3 rounded-full bg-white shadow-lg text-slate-700 hover:text-indigo-600 transition-all duration-200 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                          className="absolute bottom-3 right-3 z-10 p-2 rounded-md bg-white text-slate-700 hover:text-indigo-600 shadow-sm transition-opacity duration-200 opacity-0 group-hover:opacity-90"
                           title="Add to cart"
                         >
-                          <FiShoppingCart className="w-5 h-5" />
+                          <FiShoppingCart className="w-4 h-4" />
                         </button>
                       </div>
 
                       <div className="p-4">
-                        <Link
-                          to={`/books/${book._id || book.id}`}
-                          className="block group-hover:text-indigo-600 transition-colors duration-200"
-                        >
-                          <h3 className="text-lg font-semibold text-slate-900 truncate mb-1">
+                        <Link to={`/books/${book._id || book.id}`} className="block" aria-label={`Open ${book.original_title}`}>
+                          <h3 className="text-base font-semibold text-slate-900 truncate mb-1 leading-tight">
                             {book.original_title}
                           </h3>
                         </Link>
 
                         <p className="text-sm text-slate-600 mb-2">
-                          by{" "}
-                          <span className="font-medium text-slate-800">
-                            {book.author || "Unknown"}
-                          </span>
+                          <span className="font-medium text-slate-800">{book.author || "Unknown"}</span>
                         </p>
 
-                        {book.price && (
-                          <p className="text-lg font-bold text-slate-900">
-                            ${parseFloat(book.price).toFixed(2)}
-                          </p>
-                        )}
+                        <div className="flex items-center justify-between">
+                          <div>
+                            {book.price && (
+                              <p className="text-base font-semibold text-slate-900">
+                                ${parseFloat(book.price).toFixed(2)}
+                              </p>
+                            )}
+                          </div>
 
-                        {book.genre && (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 mt-2">
-                            {book.genre}
-                          </span>
-                        )}
+                          {book.genre && (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                              {book.genre}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </motion.div>
                   ))}

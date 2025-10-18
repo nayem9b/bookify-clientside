@@ -59,7 +59,7 @@ const ProductCards = ({
         <img 
           src={product.image} 
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-1000 hover:scale-110"
         />
       </div>
       <div className="p-6">

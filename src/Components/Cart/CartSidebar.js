@@ -232,12 +232,14 @@ const CartSidebar = () => {
                   <FaLock size={14} />
                   <span>Proceed to Checkout</span>
                 </button>
+                <Link to="/books">  
                 <button
                   onClick={() => dispatch(toggleCart())}
                   className="w-full mt-3 text-indigo-600 hover:text-indigo-700 text-sm font-medium"
                 >
                   Continue Shopping
                 </button>
+                </Link>
               </div>
             )}
           </motion.div>

@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleCart } from "../../redux/slices/cartSlice";
@@ -31,7 +31,7 @@ const Navbar = () => {
     { name: "Books", path: "/books" },
     { name: "Categories", path: "/categories" },
   ];
-
+  console.log(user);
   return (
     <header className="fixed w-full z-50 bg-white/10 backdrop-blur-lg shadow-lg">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,6 +62,12 @@ const Navbar = () => {
               ))}
               {user ? (
                 <>
+                  <Link
+                    to="/dashboard/myorders"
+                    className="text-black hover:text-gray-300 transition-colors font-medium"
+                  >
+                    My Orders
+                  </Link>
                   <Link
                     to="/dashboard"
                     className="text-black hover:text-gray-300 transition-colors font-medium"
@@ -96,7 +102,7 @@ const Navbar = () => {
             {/* Cart Button */}
             <button
               onClick={() => dispatch(toggleCart())}
-              className="relative p-2 rounded-full text-white hover:bg-white/20"
+              className="relative p-2 rounded-full text-gray-400 hover:bg-white/20"
             >
               <FaShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
@@ -174,6 +180,13 @@ const Navbar = () => {
 
               {user ? (
                 <>
+                  <Link
+                    to="/dashboard/myorders"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/20"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    My Orders
+                  </Link>
                   <Link
                     to="/dashboard"
                     className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/20"
