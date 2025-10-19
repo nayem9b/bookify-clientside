@@ -28,6 +28,7 @@ import SellerRoute from "./SellerRoute";
 import BookDetailsPage from "../BookDetailsPage/BookDetailsPage";
 import Subscription from "../subscription/Subscription";
 import AddProduct from "../AddAProduct/AddProduct";
+import AllProducts from "../AllProducts/AllProducts";
 
 export const router = createBrowserRouter([
   {
@@ -137,6 +138,14 @@ export const router = createBrowserRouter([
         element: (
           // <SellerRoute>
           <MyProducts></MyProducts>
+          // </SellerRoute>
+        ),
+      },
+      {
+        path: "/dashboard/allproducts",
+        element: (
+          // <SellerRoute>
+          <AllProducts/>
           // </SellerRoute>
         ),
       },

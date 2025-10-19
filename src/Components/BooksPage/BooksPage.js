@@ -86,12 +86,14 @@ const BooksPage = () => {
         }
         const data = await response.json();
         // Support APIs that return either an array or an object { books: [...] }
-        const payload = Array.isArray(data) ? data : data?.books || data?.data || [];
+        const payload = Array.isArray(data)
+          ? data
+          : data?.books || data?.data || [];
         if (mounted) setBooks(payload || []);
       } catch (err) {
-        if (err.name === 'AbortError') {
+        if (err.name === "AbortError") {
           // fetch was aborted because selectedCategory changed; ignore
-          console.debug('Fetch aborted for previous category');
+          console.debug("Fetch aborted for previous category");
         } else {
           if (mounted) setError(err.message);
           console.error("Error fetching books:", err);
@@ -200,7 +202,7 @@ const BooksPage = () => {
           <div className="bg-white rounded-lg shadow-md p-4 sticky top-24">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-                <FiFilter className="mr-2 text-teal-600" />
+                <FiFilter className="mr-2 text-slate-400" />
                 Categories
               </h3>
               <button
@@ -221,7 +223,7 @@ const BooksPage = () => {
                     value={categorySearch}
                     onChange={(e) => setCategorySearch(e.target.value)}
                     placeholder="Search categories"
-                    className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-300"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
                     aria-label="Search categories"
                   />
                 </div>
@@ -253,7 +255,7 @@ const BooksPage = () => {
                           aria-pressed={active}
                           className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
                             active
-                              ? "bg-teal-600 text-white shadow-sm"
+                              ? "bg-slate-400 text-white shadow-sm"
                               : "bg-slate-100 text-slate-800 hover:bg-slate-200"
                           }`}
                         >
@@ -325,7 +327,7 @@ const BooksPage = () => {
 
           {/* Search and Filter */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 1, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
             className="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4"
@@ -441,15 +443,22 @@ const BooksPage = () => {
                       className="group relative overflow-hidden bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200"
                     >
                       <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
-                        <Link to={`/books/${book._id || book.id}`} aria-label={`View ${book.original_title}`}>
+                        <Link
+                          to={`/books/${book._id || book.id}`}
+                          aria-label={`View ${book.original_title}`}
+                        >
                           <motion.img
-                            src={book.image_url || "https://via.placeholder.com/300x400?text=No+Image"}
+                            src={
+                              book.image_url ||
+                              "https://via.placeholder.com/300x400?text=No+Image"
+                            }
                             alt={book.title || "Book cover"}
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
                             loading="lazy"
                             onError={(e) => {
                               e.target.onerror = null;
-                              e.target.src = "https://via.placeholder.com/300x400?text=No+Image";
+                              e.target.src =
+                                "https://via.placeholder.com/300x400?text=No+Image";
                             }}
                           />
                         </Link>
@@ -464,8 +473,19 @@ const BooksPage = () => {
                           className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 text-slate-600 hover:text-red-500 shadow-sm transition-opacity duration-200 opacity-0 group-hover:opacity-90"
                           aria-label="Add to wishlist"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.6" stroke="currentColor" className="w-4 h-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.6"
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                            />
                           </svg>
                         </button>
 
@@ -485,14 +505,20 @@ const BooksPage = () => {
                       </div>
 
                       <div className="p-4">
-                        <Link to={`/books/${book._id || book.id}`} className="block" aria-label={`Open ${book.original_title}`}>
+                        <Link
+                          to={`/books/${book._id || book.id}`}
+                          className="block"
+                          aria-label={`Open ${book.original_title}`}
+                        >
                           <h3 className="text-base font-semibold text-slate-900 truncate mb-1 leading-tight">
                             {book.original_title}
                           </h3>
                         </Link>
 
                         <p className="text-sm text-slate-600 mb-2">
-                          <span className="font-medium text-slate-800">{book.author || "Unknown"}</span>
+                          <span className="font-medium text-slate-800">
+                            {book.author || "Unknown"}
+                          </span>
                         </p>
 
                         <div className="flex items-center justify-between">
