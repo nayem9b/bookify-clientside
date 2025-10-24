@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../Context/UserContext";
 import { motion } from "framer-motion";
 import {
@@ -95,6 +94,7 @@ const Home = () => {
   ];
 
   const { user } = useContext(AuthContext);
+  // user variable available for future use
 
   return (
     <div className="min-h-screen">
@@ -218,26 +218,56 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* Categories Section */}
+      {/* Categories Section - Enhanced with Skew Effect */}
       <motion.section
+        className="relative py-24 md:py-32 overflow-hidden"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="py-20 bg-white"
       >
-        <div className="container mx-auto px-6">
+        {/* Skewed Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 -skew-y-3 transform origin-top-left"></div>
+        
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative container mx-auto px-6 py-24 md:py-32">
           <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <motion.div
+              className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium mb-6"
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              <FiBookOpen className="w-4 h-4" />
+              <span>Explore Categories</span>
+            </motion.div>
+            
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 relative">
               Browse by Category
+              <motion.div
+                className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-white rounded-full"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.5 }}
+              />
             </h2>
-            <div className="w-24 h-1.5 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto rounded-full"></div>
+            
+            <p className="text-xl text-indigo-100 max-w-3xl mx-auto leading-relaxed">
+              Discover books across all genres and find your next favorite read in our carefully curated categories.
+            </p>
           </motion.div>
 
           <motion.div
@@ -257,20 +287,20 @@ const Home = () => {
                 whileHover="hover"
                 className="relative group"
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500 group-hover:duration-200"></div>
+                <div className="absolute -inset-1 bg-white/20 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500 group-hover:duration-200"></div>
                 <Link
                   to={`/category/${category?.name?.toLowerCase() || "all"}`}
-                  className="relative block p-6 bg-white dark:bg-gray-800 rounded-2xl h-full text-center border-2 border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+                  className="relative block p-6 bg-white/10 backdrop-blur-sm rounded-3xl h-full text-center border border-white/20 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:bg-white/20"
                 >
                   <motion.div
-                    className="w-24 h-24 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 relative shadow-inner"
+                    className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-5 relative shadow-lg"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-200 to-purple-200 dark:from-indigo-800/40 dark:to-purple-800/40 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <FiBookOpen className="h-12 w-12 text-indigo-700 dark:text-indigo-300 z-10" />
+                    <div className="absolute inset-0 bg-white/30 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <FiBookOpen className="h-10 w-10 text-white z-10" />
                     <motion.div
-                      className="absolute -inset-1 bg-gradient-to-r from-indigo-200 to-purple-200 dark:from-indigo-600/30 dark:to-purple-600/30 rounded-full blur opacity-0 group-hover:opacity-100 transition duration-1000"
+                      className="absolute -inset-1 bg-white/40 rounded-full blur opacity-0 group-hover:opacity-100 transition duration-1000"
                       initial={{ scale: 0.8, opacity: 0 }}
                       whileHover={{ scale: 1.2, opacity: 1 }}
                       transition={{ duration: 0.5 }}
@@ -278,7 +308,7 @@ const Home = () => {
                   </motion.div>
 
                   <motion.h3
-                    className="font-bold text-gray-900 dark:text-white text-xl mb-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent"
+                    className="font-bold text-white text-lg mb-2"
                     initial={{ y: 10, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
@@ -287,20 +317,20 @@ const Home = () => {
                     {category?.name || "Uncategorized"}
                   </motion.h3>
 
-                  <motion.p
-                    className="text-sm text-gray-500 dark:text-gray-300 font-medium px-2 py-1 bg-gray-50 dark:bg-gray-700/50 rounded-full inline-flex items-center"
+                  <motion.div
+                    className="text-sm text-indigo-100 font-medium px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full inline-flex items-center"
                     initial={{ y: 10, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 + index * 0.05 }}
                   >
-                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-1.5"></span>
+                    <span className="w-1.5 h-1.5 bg-white rounded-full mr-2"></span>
                     {category?.count || 0}{" "}
                     {category?.count === 1 ? "book" : "books"}
-                  </motion.p>
+                  </motion.div>
 
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
+                    className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl"
                     initial={{ opacity: 0 }}
                     whileHover={{ opacity: 1 }}
                   />
@@ -308,73 +338,141 @@ const Home = () => {
               </motion.div>
             ))}
           </motion.div>
+
+          {/* View All Categories Button */}
+          <motion.div
+            className="text-center mt-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6 }}
+          >
+            <Link
+              to="/categories"
+              className="inline-flex items-center px-8 py-4 bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/30 transition-all duration-300 group border border-white/30"
+            >
+              View All Categories
+              <FiArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </motion.div>
         </div>
       </motion.section>
 
-      {/* Featured Books */}
-      {/* Featured Books - Modern Design */}
+      {/* Trending Now - Ultra Modern Design */}
       <motion.section
-        className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-indigo-50/30"
+        className="py-20 md:py-28 bg-gradient-to-br from-slate-50 via-indigo-50/50 to-purple-50/30 relative overflow-hidden"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header with animated underline */}
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-amber-200/30 to-pink-200/30 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Enhanced Header */}
           <motion.div
-            className="text-center mb-16"
-            initial={{ y: 20, opacity: 0 }}
+            className="text-center mb-20"
+            initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 relative inline-block">
-              Trending Now
-              <motion.span
-                className="absolute -bottom-2 left-0 w-full h-1 bg-indigo-500"
+            <motion.div
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium mb-6"
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <FiTrendingUp className="w-4 h-4" />
+              <span>Trending This Week</span>
+            </motion.div>
+            
+            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 relative">
+              <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Trending Now
+              </span>
+              <motion.div
+                className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+                transition={{ duration: 1, delay: 0.5 }}
               />
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">
-              Discover the most popular books our readers can't put down
+            
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Discover the most popular books our readers can't put down. 
+              <span className="text-indigo-600 font-semibold"> Updated every hour</span> with real-time trending data.
             </p>
           </motion.div>
 
-          {/* Book Grid with staggered animation */}
+          {/* Quick Filter Tabs */}
+          <motion.div
+            className="flex flex-wrap justify-center gap-3 mb-12"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            {["All", "Fiction", "Non-Fiction", "Mystery", "Romance", "Sci-Fi"].map((filter, index) => (
+              <motion.button
+                key={filter}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                  index === 0 
+                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg" 
+                    : "bg-white text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 border border-gray-200"
+                }`}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 + index * 0.1 }}
+              >
+                {filter}
+              </motion.button>
+            ))}
+          </motion.div>
+
+          {/* Enhanced Book Grid */}
           <div className="relative">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {featuredBooks?.slice(0, 4).map((book, index) => (
                 <motion.div
                   key={book?._id || index}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 40 }}
                   whileInView={{
                     opacity: 1,
                     y: 0,
                     transition: {
-                      duration: 0.5,
-                      delay: index * 0.1,
+                      duration: 0.6,
+                      delay: index * 0.15,
                       ease: [0.16, 1, 0.3, 1],
                     },
                   }}
-                  viewport={{ once: true, margin: "-100px" }}
+                  viewport={{ once: true, margin: "-50px" }}
                   whileHover={{
-                    y: -8,
+                    y: -12,
                     transition: {
-                      duration: 0.3,
+                      duration: 0.4,
                       ease: "easeOut",
                     },
                   }}
-                  className="group"
+                  className="group relative"
                 >
-                  <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100">
-                    {/* Image with gradient overlay */}
-                    <div className="relative pt-[140%] overflow-hidden">
+                  {/* Glow Effect */}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl opacity-0 group-hover:opacity-20 blur transition duration-500"></div>
+                  
+                  <div className="relative h-full flex flex-col bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100/50 backdrop-blur-sm">
+                    {/* Enhanced Image Section */}
+                    <div className="relative pt-[150%] overflow-hidden">
                       <img
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                         src={book?.image || "/placeholder-book.jpg"}
                         alt={book?.title || "Book Cover"}
                         onError={(e) => {
@@ -382,62 +480,116 @@ const Home = () => {
                           e.target.src = "/placeholder-book.jpg";
                         }}
                       />
-                      {/* Gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      {/* Category badge */}
-                      <div className="absolute top-4 left-4">
-                        <span className="px-3 py-1 text-xs font-semibold bg-white/90 text-indigo-600 rounded-full backdrop-blur-sm">
+                      
+                      {/* Multi-layer Overlays */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      {/* Enhanced Badges */}
+                      <div className="absolute top-4 left-4 flex flex-col gap-2">
+                        <span className="px-3 py-1.5 text-xs font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full shadow-lg">
+                          #1 Trending
+                        </span>
+                        <span className="px-3 py-1.5 text-xs font-semibold bg-white/95 text-indigo-600 rounded-full backdrop-blur-sm">
                           Bestseller
                         </span>
                       </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6 flex-1 flex flex-col">
-                      <div className="flex-1">
-                        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">
-                          {book?.title || "Untitled Book"}
-                        </h3>
-                        <p className="text-indigo-600 font-medium mb-3">
-                          {book?.author || "Unknown Author"}
-                        </p>
-                        <div className="flex items-center mb-4">
+                      
+                      {/* Quick Actions */}
+                      <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-colors"
+                        >
+                          <FiBookmark className="w-4 h-4 text-indigo-600" />
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-colors"
+                        >
+                          <FiStar className="w-4 h-4 text-amber-500" />
+                        </motion.button>
+                      </div>
+                      
+                      {/* Rating Badge */}
+                      <div className="absolute bottom-4 left-4">
+                        <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
                           <div className="flex text-amber-400">
                             {[...Array(5)].map((_, i) => (
-                              <svg
-                                key={i}
-                                className="w-5 h-5 fill-current"
-                                viewBox="0 0 20 20"
-                              >
+                              <svg key={i} className="w-3 h-3 fill-current" viewBox="0 0 20 20">
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                               </svg>
                             ))}
                           </div>
-                          <span className="text-sm text-gray-500 ml-2">
-                            (24)
+                          <span className="text-xs font-semibold text-gray-700 ml-1">
+                            {book?.rating || 4.8}
                           </span>
                         </div>
                       </div>
+                    </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div>
-                          <span className="text-2xl font-bold text-gray-900">
-                            ${book?.price?.toFixed(2) || "0.00"}
-                          </span>
-                          {book?.originalPrice && (
-                            <span className="ml-2 text-sm text-gray-400 line-through">
-                              ${book.originalPrice.toFixed(2)}
-                            </span>
-                          )}
+                    {/* Enhanced Content */}
+                    <div className="p-6 flex-1 flex flex-col">
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 leading-tight group-hover:text-indigo-600 transition-colors">
+                          {book?.title || "Untitled Book"}
+                        </h3>
+                        <p className="text-indigo-600 font-semibold mb-3 text-sm">
+                          by {book?.author || "Unknown Author"}
+                        </p>
+                        
+                        {/* Enhanced Stats */}
+                        <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
+                          <div className="flex items-center gap-1">
+                            <FiUsers className="w-4 h-4" />
+                            <span>2.4k readers</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <FiClock className="w-4 h-4" />
+                            <span>3h read</span>
+                          </div>
                         </div>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="relative px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white text-sm font-semibold rounded-lg overflow-hidden group"
-                        >
-                          <span className="relative z-10">Add to Cart</span>
-                          <div className="absolute inset-0 bg-gradient-to-r from-indigo-700 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        </motion.button>
+                      </div>
+
+                      {/* Enhanced Price & Actions */}
+                      <div className="pt-4 border-t border-gray-100">
+                        <div className="flex items-center justify-between mb-4">
+                          <div>
+                            <span className="text-2xl font-bold text-gray-900">
+                              ${book?.price?.toFixed(2) || "0.00"}
+                            </span>
+                            {book?.originalPrice && (
+                              <span className="ml-2 text-sm text-gray-400 line-through">
+                                ${book.originalPrice.toFixed(2)}
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xs text-green-600 font-semibold">
+                              -20% OFF
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="flex-1 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                          >
+                            <span>Add to Cart</span>
+                            <FiArrowRight className="w-4 h-4" />
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="px-4 py-3 border-2 border-indigo-200 text-indigo-600 font-semibold rounded-xl hover:bg-indigo-50 transition-all duration-300"
+                          >
+                            <FiBookmark className="w-4 h-4" />
+                          </motion.button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -445,21 +597,38 @@ const Home = () => {
               ))}
             </div>
 
-            {/* View All Button */}
+            {/* Enhanced View All Section */}
             <motion.div
-              className="text-center mt-16"
-              initial={{ opacity: 0, y: 20 }}
+              className="text-center mt-20"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.6 }}
             >
-              <Link
-                to="/books"
-                className="inline-flex items-center px-8 py-3.5 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-full hover:bg-indigo-50 transition-colors duration-300 group"
-              >
-                Browse All Books
-                <FiArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Link>
+              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-3xl p-8 max-w-2xl mx-auto">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  Want to see more trending books?
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Explore our complete collection of trending books and discover your next favorite read.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link
+                    to="/books"
+                    className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-xl transition-all duration-300 group"
+                  >
+                    Browse All Books
+                    <FiArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                  <Link
+                    to="/trending"
+                    className="inline-flex items-center px-8 py-4 border-2 border-indigo-200 text-indigo-600 font-semibold rounded-xl hover:bg-indigo-50 transition-all duration-300 group"
+                  >
+                    View Trending
+                    <FiTrendingUp className="ml-2 h-5 w-5" />
+                  </Link>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -467,9 +636,395 @@ const Home = () => {
 
       <ProductCards />
 
-      {/* Partnered with
-       */}
+      {/* Personalized for You Section - Enhanced with Skew Effect */}
+      <motion.section
+        className="relative py-24 md:py-32 overflow-hidden"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        {/* Skewed Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 -skew-y-3 transform origin-top-left"></div>
+        
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+        </div>
 
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+          <motion.div
+            className="text-center mb-20"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.div
+              className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium mb-6"
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <FiBookOpen className="w-4 h-4" />
+              <span>AI-Powered Recommendations</span>
+            </motion.div>
+            
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 relative">
+              Personalized for You
+              <motion.div
+                className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-white rounded-full"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.5 }}
+              />
+            </h2>
+            
+            <p className="text-xl text-indigo-100 max-w-3xl mx-auto leading-relaxed">
+              Discover books tailored to your reading preferences with our advanced AI recommendation engine.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Based on Your History",
+                description: "Books similar to what you've loved before",
+                icon: <FiBook className="w-6 h-6" />,
+                color: "from-white/20 to-white/30",
+                books: ["The Silent Patient", "Where the Crawdads Sing", "Educated"]
+              },
+              {
+                title: "Trending in Your Genre",
+                description: "Popular books in your favorite categories",
+                icon: <FiTrendingUp className="w-6 h-6" />,
+                color: "from-white/20 to-white/30",
+                books: ["Project Hail Mary", "The Midnight Library", "Klara and the Sun"]
+              },
+              {
+                title: "Editor's Choice",
+                description: "Handpicked by our book experts",
+                icon: <FiAward className="w-6 h-6" />,
+                color: "from-white/20 to-white/30",
+                books: ["The Seven Husbands of Evelyn Hugo", "Circe", "The Song of Achilles"]
+              }
+            ].map((recommendation, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="relative group"
+              >
+                <div className="absolute -inset-1 bg-white/20 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"></div>
+                <div className="relative bg-white/10 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-white/20 group-hover:bg-white/20">
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${recommendation.color} flex items-center justify-center text-white mb-6 shadow-lg`}>
+                    {recommendation.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">{recommendation.title}</h3>
+                  <p className="text-indigo-100 mb-6 text-lg">{recommendation.description}</p>
+                  <div className="space-y-3 mb-6">
+                    {recommendation.books.map((book, bookIndex) => (
+                      <div key={bookIndex} className="flex items-center gap-3 text-white">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                        <span className="text-sm font-medium">{book}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full py-3 bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/30 transition-all duration-300 border border-white/30 hover:border-white/50"
+                  >
+                    View Recommendations
+                  </motion.button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Enhanced CTA Section */}
+          <motion.div
+            className="text-center mt-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6 }}
+          >
+            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 max-w-4xl mx-auto border border-white/20">
+              <h3 className="text-3xl font-bold text-white mb-4">
+                Ready to discover your next favorite book?
+              </h3>
+              <p className="text-indigo-100 mb-8 text-lg">
+                Get personalized recommendations based on your reading history and preferences.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-white text-indigo-600 font-semibold rounded-xl hover:bg-indigo-50 transition-all duration-300 shadow-lg"
+                >
+                  Get Recommendations
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300"
+                >
+                  Browse All Books
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Quick Access Toolbar */}
+      <motion.section
+        className="py-16 bg-white border-t border-b border-gray-100"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Quick Access</h2>
+            <p className="text-gray-600">Everything you need, right at your fingertips</p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {[
+              { name: "New Releases", icon: <FiBook className="w-6 h-6" />, color: "indigo", link: "/new-releases" },
+              { name: "Best Sellers", icon: <FiAward className="w-6 h-6" />, color: "amber", link: "/bestsellers" },
+              { name: "Free Books", icon: <FiBookOpen className="w-6 h-6" />, color: "green", link: "/free-books" },
+              { name: "Audio Books", icon: <FiBookmark className="w-6 h-6" />, color: "purple", link: "/audiobooks" },
+              { name: "My Library", icon: <FiUsers className="w-6 h-6" />, color: "blue", link: "/library" },
+              { name: "Wishlist", icon: <FiStar className="w-6 h-6" />, color: "pink", link: "/wishlist" }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -2 }}
+                className="group"
+              >
+                <Link
+                  to={item.link}
+                  className={`block p-6 rounded-2xl bg-gradient-to-br from-${item.color}-50 to-${item.color}-100 hover:from-${item.color}-100 hover:to-${item.color}-200 transition-all duration-300 text-center group-hover:shadow-lg`}
+                >
+                  <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-${item.color}-500 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}>
+                    {item.icon}
+                  </div>
+                  <h3 className="font-semibold text-gray-900 text-sm">{item.name}</h3>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Reading Progress & Achievements */}
+      <motion.section
+        className="py-20 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-emerald-200/40 to-teal-200/40 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-gradient-to-tr from-cyan-200/40 to-blue-200/40 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                Start Your Reading Journey
+              </span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Join thousands of readers and begin your personalized reading adventure with our community-driven platform.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg"
+            >
+              <div className="text-center">
+                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center text-white text-2xl font-bold">
+                  12
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Join Our Community</h3>
+                <p className="text-gray-600 mb-4">Connect with fellow book lovers and discover new favorites together!</p>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2 rounded-full" style={{ width: '75%' }}></div>
+                </div>
+                <p className="text-sm text-gray-500 mt-2">50,000+ active readers</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg"
+            >
+              <div className="text-center">
+                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-teal-500 to-cyan-500 flex items-center justify-center text-white text-2xl font-bold">
+                  5
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Discover New Books</h3>
+                <p className="text-gray-600 mb-4">Explore our curated collection of trending and recommended books!</p>
+                <div className="flex justify-center gap-2">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-8 h-8 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                      📚
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+              className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg"
+            >
+              <div className="text-center">
+                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white text-2xl font-bold">
+                  2.4k
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Get Started Today</h3>
+                <p className="text-gray-600 mb-4">Sign up now and get access to thousands of books!</p>
+                <div className="text-3xl font-bold text-cyan-600">🚀</div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Social Proof & Community */}
+      <motion.section
+        className="py-20 bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-50 relative overflow-hidden"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-violet-200/40 to-purple-200/40 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-gradient-to-tr from-indigo-200/40 to-blue-200/40 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <span className="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                Join Our Community
+              </span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Connect with fellow book lovers, share reviews, and discover your next favorite read.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                title: "Book Clubs",
+                description: "Join discussions with 10,000+ active members",
+                icon: <FiUsers className="w-8 h-8" />,
+                color: "from-violet-500 to-purple-500",
+                members: "10,000+"
+              },
+              {
+                title: "Reading Challenges",
+                description: "Participate in monthly reading challenges",
+                icon: <FiAward className="w-8 h-8" />,
+                color: "from-purple-500 to-indigo-500",
+                members: "5,000+"
+              },
+              {
+                title: "Author Events",
+                description: "Meet your favorite authors in virtual events",
+                icon: <FiBookOpen className="w-8 h-8" />,
+                color: "from-indigo-500 to-blue-500",
+                members: "2,000+"
+              },
+              {
+                title: "Reviews & Ratings",
+                description: "Share your thoughts and help others discover",
+                icon: <FiStar className="w-8 h-8" />,
+                color: "from-blue-500 to-cyan-500",
+                members: "50,000+"
+              }
+            ].map((community, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${community.color} flex items-center justify-center text-white mb-4`}>
+                  {community.icon}
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{community.title}</h3>
+                <p className="text-gray-600 mb-4">{community.description}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-gray-500">{community.members} members</span>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-4 py-2 bg-gradient-to-r from-violet-500 to-purple-500 text-white text-sm font-semibold rounded-lg hover:shadow-lg transition-all duration-300"
+                  >
+                    Join Now
+                  </motion.button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Partnered with */}
       <PartneredWith />
       {/* Features */}
       <motion.section
