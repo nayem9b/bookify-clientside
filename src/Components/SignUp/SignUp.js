@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/UserContext";
 import useTitle from "../Hooks/UseTitle";
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiArrowLeft, FiUpload } from "react-icons/fi";
-import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
 // Animation variants
 const containerVariants = {
@@ -473,8 +473,8 @@ const SignUp = () => {
 
             {/* Google Sign In */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              // initial={{ opacity: 0, y: 20 }}
+              // animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
             >
               <button
@@ -482,7 +482,7 @@ const SignUp = () => {
                 onClick={handleGoogleSignIn}
                 className='w-full flex items-center justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200'
               >
-                <FaGoogle className='h-5 w-5 text-red-500 mr-2' />
+                <FcGoogle className='h-5 w-5 mr-2' />
                 Sign up with Google
               </button>
             </motion.div>

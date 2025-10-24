@@ -1,7 +1,16 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/UserContext";
-import { FiMail, FiLock, FiEye, FiEyeOff, FiArrowLeft, FiBookOpen, FiUserPlus } from "react-icons/fi";
+import {
+  FiMail,
+  FiLock,
+  FiEye,
+  FiEyeOff,
+  FiArrowLeft,
+  FiBookOpen,
+  FiUserPlus,
+  FiUser,
+} from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
@@ -43,13 +52,16 @@ const SignIn = () => {
       const result = await googleSignIn();
       const user = result.user;
       const currentUser = { email: user.email };
-      
-      const response = await fetch("https://server-side-nayem9b.vercel.app/jwt", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(currentUser),
-      });
-      
+
+      const response = await fetch(
+        "https://server-side-nayem9b.vercel.app/jwt",
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(currentUser),
+        }
+      );
+
       const data = await response.json();
       localStorage.setItem("jwt-token", data.token);
       navigate(from, { replace: true });
@@ -90,7 +102,10 @@ const SignIn = () => {
       toast.success("Successfully signed in!");
     } catch (error) {
       console.error(error);
-      toast.error(error.message || "Failed to sign in. Please check your credentials and try again.");
+      toast.error(
+        error.message ||
+          "Failed to sign in. Please check your credentials and try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -98,82 +113,125 @@ const SignIn = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
-      <motion.div 
+      <motion.div
         className="max-w-6xl mx-auto mt-16 "
         initial="hidden"
         animate={isMounted ? "show" : "hidden"}
         variants={container}
       >
         <div className="flex flex-col lg:flex-row items-center justify-center min-h-[85vh] gap-8 lg:gap-16">
-          {/* Left side - Minimal Information Panel */}
-          <motion.div 
+          {/* Left side - Modern Information Panel */}
+          <motion.div
             className="hidden lg:flex flex-1 max-w-xl xl:max-w-2xl"
             variants={item}
           >
-           <div className="w-full h-full p-8 bg-white">
-  <div className="relative w-full h-full rounded-3xl bg-slate-50 border border-slate-200 overflow-hidden flex flex-col justify-between p-12">
-    
-    {/* Image Tiles Grid (soft overlay) */}
-    <div className="absolute inset-0 grid grid-cols-3 gap-2 opacity-100 pointer-events-none">
-      {[...Array(9)].map((_, i) => (
-        <div
-          key={i}
-          className="rounded-xl overflow-hidden"
-        >
-          <img
-            src={`https://picsum.photos/seed/${i + 1}/400/400`}
-            alt=""
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
-        </div>
-      ))}
-    </div>
+            <div className="w-full h-full p-8">
+              <div className="relative w-full h-full rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 overflow-hidden">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-10">
+                  <div 
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+                    }}
+                  ></div>
+                </div>
 
-    {/* Soft overlay tint */}
-    <div className="absolute inset-0 bg-white/70 backdrop-blur-sm"></div>
+                {/* Floating Elements */}
+                <div className="absolute top-10 right-10 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
+                <div className="absolute bottom-20 left-10 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+                <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-white/10 rounded-full blur-lg"></div>
 
-    {/* Text content */}
-    <div className="relative z-10 flex flex-col justify-center h-full">
-      <div className="mb-12">
-        <h2 className="text-4xl font-bold text-slate-800 mb-4 leading-tight tracking-tight">
-          Welcome Back
-        </h2>
-        <p className="text-slate-600 text-lg max-w-sm">
-          Rediscover your world of stories — calm, intuitive, and made for focused reading.
-        </p>
-      </div>
+                {/* Content */}
+                <div className="relative z-10 flex flex-col justify-center h-full p-12 text-white">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="mb-8"
+                  >
+                    <div className="flex items-center mb-6">
+                      <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mr-4">
+                        <FiBookOpen className="w-6 h-6 text-white" />
+                      </div>
+                      <span className="text-2xl font-bold">Bookify</span>
+                    </div>
+                    <h2 className="text-5xl font-bold mb-6 leading-tight">
+                      Welcome Back
+                    </h2>
+                    <p className="text-xl text-white/90 leading-relaxed max-w-md">
+                      Continue your reading journey with thousands of books at your fingertips.
+                    </p>
+                  </motion.div>
 
-      <div className="space-y-6 mb-12">
-        {/* <div>
-          <h3 className="font-semibold text-slate-800">Access Anywhere</h3>
-          <p className="text-slate-600 text-sm mt-1">Your library syncs seamlessly across devices.</p>
-        </div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                    className="space-y-6 mb-12"
+                  >
+                    <div className="flex items-start space-x-4">
+                      <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                        <FiBookOpen className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white text-lg mb-1">Unlimited Access</h3>
+                        <p className="text-white/80">Browse our extensive library of books</p>
+                      </div>
+                    </div>
 
-        <div>
-          <h3 className="font-semibold text-slate-800">Curated Collection</h3>
-          <p className="text-slate-600 text-sm mt-1">Over 10,000 handpicked titles for every reader.</p>
-        </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                        <FiUser className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white text-lg mb-1">Personalized</h3>
+                        <p className="text-white/80">Get recommendations tailored to your taste</p>
+                      </div>
+                    </div>
 
-        <div>
-          <h3 className="font-semibold text-slate-800">Seamless Experience</h3>
-          <p className="text-slate-600 text-sm mt-1">Resume your reading effortlessly, anytime.</p>
-        </div> */}
-      </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                        <FiLock className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white text-lg mb-1">Secure & Private</h3>
+                        <p className="text-white/80">Your reading data is always protected</p>
+                      </div>
+                    </div>
+                  </motion.div>
 
-      <div className="mt-auto pt-8 border-t border-slate-200">
-        <p className="text-sm text-slate-500">
-          Join a global community of lifelong learners.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.9 }}
+                    className="mt-auto pt-8 border-t border-white/20"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className="flex -space-x-2">
+                        {[...Array(3)].map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full border-2 border-white/30 flex items-center justify-center text-xs font-semibold text-white"
+                          >
+                            {String.fromCharCode(65 + i)}
+                          </div>
+                        ))}
+                      </div>
+                      <div>
+                        <p className="text-sm text-white/80">
+                          Join <span className="font-semibold text-white">50,000+</span> readers worldwide
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
           </motion.div>
 
           {/* Right side - Form */}
-          <motion.div 
+          <motion.div
             className="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden border-0"
             variants={item}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -181,14 +239,14 @@ const SignIn = () => {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 h-2"></div>
               <div className="p-8 sm:p-10">
-                <motion.div 
+                <motion.div
                   className="text-center mb-8"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                 >
                   <div className="flex items-center justify-center mb-4">
-                    <motion.div 
+                    <motion.div
                       className="hover:scale-110 transition-transform duration-200"
                       whileHover={{ rotate: 5, scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
@@ -204,14 +262,14 @@ const SignIn = () => {
                 </motion.div>
 
                 <form onSubmit={handleEmailLogin} className="space-y-6">
-                  <motion.div 
-                    className="space-y-2"
-                    variants={item}
-                  >
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  <motion.div className="space-y-2" variants={item}>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Email address
                     </label>
-                    <motion.div 
+                    <motion.div
                       className="relative"
                       whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.99 }}
@@ -231,21 +289,24 @@ const SignIn = () => {
                     </motion.div>
                   </motion.div>
 
-                  <motion.div 
-                    className="space-y-2"
-                    variants={item}
-                  >
+                  <motion.div className="space-y-2" variants={item}>
                     <div className="flex items-center justify-between">
-                      <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                      <label
+                        htmlFor="password"
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Password
                       </label>
                       <div className="text-sm">
-                          <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
-                            Forgot password?
-                          </Link>
+                        <Link
+                          to="/forgot-password"
+                          className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
+                        >
+                          Forgot password?
+                        </Link>
                       </div>
                     </div>
-                    <motion.div 
+                    <motion.div
                       className="relative"
                       whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.99 }}
@@ -278,24 +339,39 @@ const SignIn = () => {
                     </motion.div>
                   </motion.div>
 
-                  <motion.div 
-                    className="pt-2"
-                    variants={item}
-                  >
+                  <motion.div className="pt-2" variants={item}>
                     <motion.button
                       type="submit"
                       disabled={isSubmitting}
                       className={`w-full flex justify-center py-3.5 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-md ${
-                        isSubmitting ? 'opacity-80 cursor-not-allowed' : 'hover:shadow-lg'
+                        isSubmitting
+                          ? "opacity-80 cursor-not-allowed"
+                          : "hover:shadow-lg"
                       }`}
                       whileHover={!isSubmitting ? { scale: 1.01 } : {}}
                       whileTap={!isSubmitting ? { scale: 0.99 } : {}}
                     >
                       {isSubmitting ? (
                         <div className="flex items-center">
-                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          <svg
+                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
                           </svg>
                           Signing in...
                         </div>
@@ -306,20 +382,19 @@ const SignIn = () => {
                   </motion.div>
                 </form>
 
-                <motion.div 
-                  className="mt-8"
-                  variants={item}
-                >
+                <motion.div className="mt-8" variants={item}>
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="px-3 bg-white text-sm text-gray-500 font-medium">Or continue with</span>
+                      <span className="px-3 bg-white text-sm text-gray-500 font-medium">
+                        Or continue with
+                      </span>
                     </div>
                   </div>
 
-                  <motion.div 
+                  <motion.div
                     className="mt-6"
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
@@ -334,27 +409,27 @@ const SignIn = () => {
                   </motion.div>
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                   className="mt-8 text-center text-sm"
                   variants={item}
                 >
                   <p className="text-gray-600">
-                    Don't have an account?{' '}
-                    <Link 
-                      to="/signup" 
+                    Don't have an account?{" "}
+                    <Link
+                      to="/signup"
                       className="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline transition-colors duration-200"
                     >
                       <FiUserPlus className="inline mr-1" /> Create an account
                     </Link>
                   </p>
-                  
-                  <motion.div 
+
+                  <motion.div
                     className="mt-6"
                     whileHover={{ x: -2 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
+                    transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <Link 
-                      to="/" 
+                    <Link
+                      to="/"
                       className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-indigo-600 transition-colors duration-200"
                     >
                       <FiArrowLeft className="mr-1" /> Back to home
