@@ -13,7 +13,9 @@ import {
   FiUsers,
   FiBookmark,
   FiBook,
+  FiTwitter,
 } from "react-icons/fi";
+import { FaXTwitter } from "react-icons/fa6";
 import reading from "../../Images/reading.jpg";
 import PartneredWith from "../PartneredWith/partneredWith";
 import ProductCards from "../FeaturedProducts/ProductCard";
@@ -1242,15 +1244,22 @@ const Home = () => {
 
       <ViewSubscription />
 
-      {/* Testimonials */}
+      {/* Modern Testimonials Carousel */}
       <motion.section
-        className="py-20 bg-gradient-to-br from-gray-50 to-indigo-50"
+        className="py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 relative overflow-hidden"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <div className="container mx-auto px-6">
+        {/* Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-indigo-200/30 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-purple-200/30 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-pink-200/20 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -1258,69 +1267,191 @@ const Home = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              What Our Readers Say
+            <motion.div
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium mb-6"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              <FiStar className="w-4 h-4" />
+              <span>Community Love</span>
+            </motion.div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                What Our Readers Say
+              </span>
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Don't just take our word for it. Here's what our community has to
-              say about their experience.
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+              Real stories from our amazing community of book lovers around the world
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                quote:
-                  "Bookify has completely transformed my reading habits. The selection is incredible and the recommendations are always on point.",
-                author: "Sarah Johnson",
-                role: "Avid Reader",
-              },
-              {
-                quote:
-                  "I love how easy it is to discover new books and authors. The user experience is seamless and the delivery is always prompt.",
-                author: "Michael Chen",
-                role: "Book Club Organizer",
-              },
-              {
-                quote:
-                  "As a student, I appreciate the affordable prices and the wide range of academic books available. Highly recommended!",
-                author: "Emily Rodriguez",
-                role: "University Student",
-              },
-            ].map((testimonial, index) => (
+          {/* Moving Testimonials Carousel */}
+          <div className="relative">
+            <div className="overflow-hidden">
               <motion.div
-                key={index}
-                className="bg-white p-8 rounded-2xl shadow-lg"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                className="flex gap-8"
+                animate={{
+                  x: [0, -100 * 3] // Move 3 cards worth
+                }}
+                transition={{
+                  x: {
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    duration: 20,
+                    ease: "linear",
+                  },
+                }}
+                style={{ width: "max-content" }}
               >
-                <div className="text-amber-400 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <FiStar
-                      key={i}
-                      className="inline-block w-5 h-5 fill-current"
-                    />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-6 italic">
-                  "{testimonial.quote}"
-                </p>
-                <div className="flex items-center">
-                  <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg mr-4">
-                    {testimonial.author.charAt(0)}
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">
-                      {testimonial.author}
-                    </h4>
-                    <p className="text-sm text-gray-500">{testimonial.role}</p>
-                  </div>
-                </div>
+                {[
+                  {
+                    quote: "Bookify has completely transformed my reading habits. The AI recommendations are spot-on and I've discovered so many amazing books I never would have found otherwise!",
+                    author: "Sarah Johnson",
+                    role: "Avid Reader",
+                    image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+                    twitter: "@sarahj_reads",
+                    rating: 5,
+                    date: "2 days ago"
+                  },
+                  {
+                    quote: "The user experience is absolutely seamless! I love how easy it is to discover new authors and the delivery is always prompt. My book club members are jealous!",
+                    author: "Michael Chen",
+                    role: "Book Club Organizer",
+                    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+                    twitter: "@mikechen_books",
+                    rating: 5,
+                    date: "1 week ago"
+                  },
+                  {
+                    quote: "As a student, I appreciate the affordable prices and the wide range of academic books. The study guides and summaries are incredibly helpful for my courses!",
+                    author: "Emily Rodriguez",
+                    role: "University Student",
+                    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+                    twitter: "@emily_studies",
+                    rating: 5,
+                    date: "3 days ago"
+                  },
+                  {
+                    quote: "The personalized reading lists are incredible! I've read more books in the past 6 months than I did in the previous 2 years. Bookify is a game-changer!",
+                    author: "David Kim",
+                    role: "Software Engineer",
+                    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+                    twitter: "@davidkim_tech",
+                    rating: 5,
+                    date: "5 days ago"
+                  },
+                  {
+                    quote: "The community features are amazing! I've connected with so many like-minded readers and discovered books through their recommendations. It's like having a personal book club!",
+                    author: "Lisa Wang",
+                    role: "Marketing Manager",
+                    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
+                    twitter: "@lisawang_reads",
+                    rating: 5,
+                    date: "1 day ago"
+                  },
+                  {
+                    quote: "The audio book integration is fantastic! I can seamlessly switch between reading and listening during my commute. The narrator quality is top-notch!",
+                    author: "James Wilson",
+                    role: "Business Analyst",
+                    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+                    twitter: "@jamesw_business",
+                    rating: 5,
+                    date: "4 days ago"
+                  }
+                ].map((testimonial, index) => (
+                  <motion.div
+                    key={index}
+                    className="flex-shrink-0 w-96 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 hover:shadow-2xl transition-all duration-300 group cursor-pointer"
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    onClick={() => window.open(`https://x.com/${testimonial.twitter.replace('@', '')}`, '_blank')}
+                  >
+                    {/* Header with rating and date */}
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center space-x-1">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <FiStar
+                            key={i}
+                            className="w-4 h-4 text-amber-400 fill-current"
+                          />
+                        ))}
+                      </div>
+                      <span className="text-sm text-gray-500">{testimonial.date}</span>
+                    </div>
+
+                    {/* Quote */}
+                    <blockquote className="text-gray-700 mb-6 leading-relaxed text-lg">
+                      "{testimonial.quote}"
+                    </blockquote>
+
+                    {/* Author Info */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="relative">
+                          <img
+                            src={testimonial.image}
+                            alt={testimonial.author}
+                            className="w-12 h-12 rounded-full object-cover ring-2 ring-indigo-100"
+                          />
+                          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900 text-sm">
+                            {testimonial.author}
+                          </h4>
+                          <p className="text-xs text-gray-500">{testimonial.role}</p>
+                        </div>
+                      </div>
+                      
+                      {/* X (Twitter) Icon */}
+                      <div className="flex items-center space-x-2 text-indigo-600 group-hover:text-indigo-700 transition-colors">
+                        <FaXTwitter className="w-5 h-5" />
+                        <span className="text-sm font-medium">{testimonial.twitter}</span>
+                      </div>
+                    </div>
+
+                    {/* Hover Effect Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </motion.div>
+                ))}
               </motion.div>
-            ))}
+            </div>
+
+            {/* Gradient Fades */}
+            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-indigo-50/50 to-transparent pointer-events-none z-10"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-indigo-50/50 to-transparent pointer-events-none z-10"></div>
           </div>
+
+          {/* Call to Action */}
+          <motion.div
+            className="text-center mt-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            <p className="text-gray-600 mb-6">
+              Join thousands of happy readers and start your journey today
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Start Reading Free
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-xl hover:bg-indigo-50 transition-all duration-300"
+              >
+                View All Reviews
+              </motion.button>
+            </div>
+          </motion.div>
         </div>
       </motion.section>
 
