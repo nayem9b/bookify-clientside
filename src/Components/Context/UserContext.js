@@ -6,21 +6,30 @@ import {
   signInWithEmailAndPassword,
   getAuth,
   signOut,
-  signInWithPopup,
+  signInWithRedirect,
 } from "firebase/auth";
 import app from "../Firebase/Firebase.config";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext({
+  user: null,
+  loading: true,
+  googleSignIn: () => {},
+  userSignIn: () => {},
+  logout: () => {},
+  userSignUp: () => {},
+});
 const auth = getAuth(app);
+console.log("Auth initialized:", auth);
 const UserContext = ({ children }) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
+  console.log(user);
   const [loading, setLoading] = useState(true);
   const googleProvider = new GoogleAuthProvider();
 
   //GoogleSignIn
   const googleSignIn = () => {
     setLoading(true);
-    return signInWithPopup(auth, googleProvider);
+    return signInWithRedirect(auth, googleProvider);
   };
   //User SignIn
   const userSignIn = (email, password) => {
@@ -37,13 +46,14 @@ const UserContext = ({ children }) => {
   //OnAuthStateChanged
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("Auth state changed:", currentUser);
       setUser(currentUser);
       setLoading(false);
     });
     return () => {
       unsubscribe();
     };
-  }, [user]);
+  }, []);
 
   //User Log Out
   const logout = () => {

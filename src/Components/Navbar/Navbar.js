@@ -39,6 +39,7 @@ const Navbar = () => {
   const [isDiscoverOpen, setIsDiscoverOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useContext(AuthContext);
+  console.log(user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { items } = useSelector((state) => state.cart);

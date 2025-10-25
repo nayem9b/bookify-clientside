@@ -1,70 +1,75 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { toast } from 'react-hot-toast';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  getAuth,
+  signOut,
+  signInWithRedirect,
+} from "firebase/auth";
+import app from "../Components/Firebase/Firebase.config";
 
-export const AuthContext = createContext();
-
-export const AuthProvider = ({ children }) => {
+export const AuthContext = createContext({
+  user: null,
+  loading: true,
+  googleSignIn: () => {},
+  userSignIn: () => {},
+  logout: () => {},
+  userSignUp: () => {},
+});
+const auth = getAuth(app);
+function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(localStorage.getItem('bookify-token') || null);
+  const googleProvider = new GoogleAuthProvider();
 
-  // Fetch user data when token changes
-  const { data: userData, isLoading } = useQuery(['user', token], async () => {
-    if (!token) return null;
-    const response = await fetch('http://localhost:5000/api/users/me', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-    if (!response.ok) {
-      localStorage.removeItem('bookify-token');
-      setToken(null);
-      return null;
-    }
-    return response.json();
-  }, {
-    enabled: !!token,
-    onError: () => {
-      localStorage.removeItem('bookify-token');
-      setToken(null);
-    },
-  });
+  //GoogleSignIn
+  const googleSignIn = () => {
+    setLoading(true);
+    return signInWithRedirect(auth, googleProvider);
+  };
+  //User SignIn
+  const userSignIn = (email, password) => {
+    setLoading(true);
+    return signInWithEmailAndPassword(auth, email, password);
+  };
 
+  //User SignUp
+  const userSignUp = (email, password) => {
+    setLoading(true);
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+
+  //OnAuthStateChanged
   useEffect(() => {
-    if (userData) {
-      setUser(userData);
-    } else if (userData === null) {
-      setUser(null);
-    }
-    setLoading(isLoading);
-  }, [userData, isLoading]);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-  const login = (userData, authToken) => {
-    localStorage.setItem('bookify-token', authToken);
-    setToken(authToken);
-    setUser(userData);
-    toast.success('Logged in successfully!');
-  };
-
+  //User Log Out
   const logout = () => {
-    localStorage.removeItem('bookify-token');
-    setToken(null);
-    setUser(null);
-    toast.success('Logged out successfully!');
+    return signOut(auth);
   };
-
-  const value = {
-    user,
-    token,
-    isAuthenticated: !!user,
-    loading,
-    login,
+  const authInfo = {
+    googleSignIn,
+    userSignIn,
     logout,
+    userSignUp,
+    loading,
+    user,
   };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
 };
+
+export { AuthProvider };
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

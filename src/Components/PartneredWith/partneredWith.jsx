@@ -1,9 +1,9 @@
 // Import local company logos
-import darazLogo from "../../Assets/Companies/daraz.png";
-import carrybeeLogo from "../../Assets/Companies/carrybee.png";
-import pathaoLogo from "../../Assets/Companies/pathao.png";
-import redxLogo from "../../Assets/Companies/redx.png";
-import steadfastLogo from "../../Assets/Companies/steadfast.png";
+import darazLogo from "../../Assets/Companies/daraz2.png";
+import carrybeeLogo from "../../Assets/Companies/cb.png";
+import pathaoLogo from "../../Assets/Companies/pathao2.png";
+import redxLogo from "../../Assets/Companies/red.avif";
+import steadfastLogo from "../../Assets/Companies/std2.png";
 
 // interface Partner {
 //   name: string;
@@ -60,39 +60,39 @@ export const PartneredWith = ({
         <div className="relative">
           {/* Gradient Overlays */}
           <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 via-gray-50/80 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 via-gray-50/80 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 via-gray-50/5 to-transparent z-10 pointer-events-none" />
           
           {/* Scrolling Container */}
           <div className="flex overflow-hidden">
             {/* First set of logos */}
-            <div className="flex gap-16 animate-scroll-left">
+            <div className="flex gap-12 animate-scroll-left min-w-max">
               {partners.map((partner, index) => (
                 <div
                   key={`${partner.name}-${index}`}
-                  className="flex-shrink-0 w-24 h-20 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-500 hover:scale-105 hover:shadow-xl cursor-pointer group"
+                  className="flex-shrink-0 w-32 h-20 md:w-36 lg:w-40 flex items-center justify-center rounded-2xl shadow-sm grayscale hover:grayscale-0 opacity-90 hover:opacity-100 transition-transform duration-300 hover:scale-105 cursor-pointer group bg-transparent border-0"
                   title={partner.name}
                 >
                   <img
                     src={partner.logo}
                     alt={partner.name}
-                    className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                    className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"
                   />
                 </div>
               ))}
             </div>
             {/* Duplicate set for seamless scrolling */}
-            <div className="flex gap-16 animate-scroll-left">
+            <div className="flex gap-12 animate-scroll-left min-w-max">
               {partners.map((partner, index) => (
                 <div
                   key={`${partner.name}-duplicate-${index}`}
-                  className="flex-shrink-0 w-24 h-20 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-500 hover:scale-105 hover:shadow-xl cursor-pointer group"
+                  className="flex-shrink-0 w-32 h-20 md:w-36 lg:w-40 flex items-center justify-center rounded-2xl shadow-sm grayscale hover:grayscale-0 opacity-90 hover:opacity-100 transition-transform duration-300 hover:scale-105 cursor-pointer group bg-transparent border-0"
                   title={partner.name}
                 >
                   <img
                     src={partner.logo}
                     alt={partner.name}
-                    className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                    className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"
                   />
                 </div>
