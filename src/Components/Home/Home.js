@@ -1365,7 +1365,7 @@ const Home = () => {
                   <motion.div
                     key={index}
                     className="flex-shrink-0 w-96 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 hover:shadow-2xl transition-all duration-300 group cursor-pointer"
-                    whileHover={{ y: -8, scale: 1.02 }}
+                    // whileHover={{ y: -8, scale: 1.02 }}
                     onClick={() => window.open(`https://x.com/${testimonial.twitter.replace('@', '')}`, '_blank')}
                   >
                     {/* Header with rating and date */}
@@ -1548,7 +1548,7 @@ const Home = () => {
               </Link>
               <Link
                 to="/books"
-                className="px-8 py-4 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 text-center"
+                className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-lg hover:shadow-lg transition-all duration-200 text-center"
               >
                 Browse Books
               </Link>
@@ -1578,9 +1578,10 @@ const Home = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-6 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all duration-200"
+                className="flex-1 px-6 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-200 shadow-sm"
+                aria-label="Email address for newsletter subscription"
               />
-              <button className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-all duration-200">
+              <button className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md">
                 Subscribe
               </button>
             </div>

@@ -18,6 +18,8 @@ export default function BookDetailsPage() {
   const book = useLoaderData() || {};
   const { id } = useParams();
   const { user } = useContext(AuthContext) || {};
+  const [wishlistLoading, setWishlistLoading] = useState(false);
+  const lastWishlistRef = React.useRef(0);
   const [activeTab, setActiveTab] = useState("description");
   const [message, setMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([
@@ -43,13 +45,11 @@ export default function BookDetailsPage() {
   const handleAddToCart = (book) => {
     dispatch(addToCart(book));
     toast.success(`${book.title} added to cart!`, {
-      position: "bottom-right",
+      position: "top-right",
     });
   };
 
-  const handleCheckout = () => {
-    window.location.href = `/payment?bookId=${book._id || id}`;
-  };
+  // removed unused handleCheckout to avoid linter error
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -137,6 +137,80 @@ export default function BookDetailsPage() {
           </section>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <button
+              aria-label="Add to wishlist"
+              onClick={async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Require user to be signed in
+                if (!user) {
+                  toast.error("Please sign in to add to wishlist.");
+                  return;
+                }
+
+                const now = Date.now();
+                // rate limit: 2s between requests
+                if (now - lastWishlistRef.current < 2000) {
+                  toast("You're doing that too fast. Please wait a moment.");
+                  return;
+                }
+                lastWishlistRef.current = now;
+
+                // send patch request to server to add wishlist item to the user's document
+                try {
+                  setWishlistLoading(true);
+
+                  const API = process.env.REACT_APP_API_URL || "/api";
+                  const userId = user?.uid || user?.id || user?.email;
+                  if (!userId) {
+                    toast.error("Unable to determine user id. Please sign in again.");
+                    setWishlistLoading(false);
+                    return;
+                  }
+
+                  // include optional auth token if available (some backends expect it)
+                  const token = localStorage.getItem("bookify-token");
+
+                  const res = await fetch(
+                    `${API}/users/${encodeURIComponent(userId)}/wishlist`,
+                    {
+                      method: "PATCH",
+                      headers: {
+                        "Content-Type": "application/json",
+                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                      },
+                      body: JSON.stringify({
+                        bookId: book._id || id,
+                        book,
+                      }),
+                    }
+                  );
+
+                  if (!res.ok) {
+                    const errText = await res.text().catch(() => null);
+                    throw new Error(errText || `Request failed with ${res.status}`);
+                  }
+
+                  // optionally update local UI here (e.g., set a filled heart) if API returns data
+                  toast.success("Added to wishlist");
+                } catch (err) {
+                  console.error("Wishlist error:", err);
+                  toast.error("Failed to add to wishlist. Try again later.");
+                } finally {
+                  // keep small cooldown to avoid accidental double clicks
+                  setTimeout(() => setWishlistLoading(false), 600);
+                }
+              }}
+              disabled={wishlistLoading}
+              className={`ml-auto sm:ml-0 p-3 rounded-lg transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-indigo-300 ${
+                wishlistLoading
+                  ? "bg-indigo-50 text-indigo-300 cursor-not-allowed"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+              }`}
+            >
+              <FaHeart aria-hidden />
+            </button>
             <motion.button
               onClick={(e) => {
                 e.preventDefault();
@@ -160,7 +234,7 @@ export default function BookDetailsPage() {
               {/* subtle background motion glow */}
               <motion.span
                 layoutId="cart-glow"
-                className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/10 to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/25 to-violet-500/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               />
             </motion.button>
 
@@ -171,13 +245,6 @@ export default function BookDetailsPage() {
             >
               Buy Now
             </motion.button> */}
-
-            <button
-              aria-label="Add to wishlist"
-              className="ml-auto sm:ml-0 p-3 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200"
-            >
-              <FaHeart aria-hidden />
-            </button>
           </div>
 
           <nav className="flex gap-4 border-b border-slate-100">
@@ -303,6 +370,7 @@ function Badge({ label }) {
 function TabButton({ children, active, onClick }) {
   return (
     <button
+      role="tab"
       onClick={onClick}
       className={`py-3 text-sm font-medium ${
         active

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaPlus, FaMinus, FaTrash, FaShoppingCart, FaLock } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { toggleCart, removeFromCart, updateQuantity, clearCart } from '../../red
 const CartSidebar = () => {
   const dispatch = useDispatch();
   const { items, isOpen } = useSelector((state) => state.cart);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const calculateTotal = () => {
     return items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
@@ -23,9 +24,16 @@ const CartSidebar = () => {
   };
 
   const handleClearCart = () => {
-    if (window.confirm('Are you sure you want to clear your entire cart?')) {
-      dispatch(clearCart());
-    }
+    setIsConfirmOpen(true);
+  };
+
+  const confirmClearCart = () => {
+    dispatch(clearCart());
+    setIsConfirmOpen(false);
+  };
+
+  const cancelClearCart = () => {
+    setIsConfirmOpen(false);
   };
 
   const navigate = useNavigate();
@@ -123,14 +131,27 @@ const CartSidebar = () => {
             <div className="px-6 py-5 border-b border-gray-100">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-gray-800">Your Cart</h2>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => dispatch(toggleCart())}
-                  className="p-2 text-gray-500 hover:text-gray-700"
-                >
-                  <FaTimes size={20} />
-                </motion.button>
+                <div className="flex items-center space-x-2">
+                  {items.length > 0 && (
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleClearCart}
+                      className="p-2 text-red-500 hover:text-red-700"
+                      title="Clear all items"
+                    >
+                      <FaTrash size={18} />
+                    </motion.button>
+                  )}
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => dispatch(toggleCart())}
+                    className="p-2 text-gray-500 hover:text-gray-700"
+                  >
+                    <FaTimes size={20} />
+                  </motion.button>
+                </div>
               </div>
               <p className="text-gray-500 text-sm mt-1">
                 {items.length} {items.length === 1 ? 'item' : 'items'} in cart
@@ -243,6 +264,44 @@ const CartSidebar = () => {
               </div>
             )}
           </motion.div>
+
+          {/* Confirmation Modal */}
+          <AnimatePresence>
+            {isConfirmOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-60 bg-black/50 z-60 mr-80"
+                onClick={cancelClearCart}
+              >
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-6 max-w-sm mx-4"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Clear Cart</h3>
+                  <p className="text-gray-600 mb-6">Are you sure you want to clear your entire cart? This action cannot be undone.</p>
+                  <div className="flex space-x-3">
+                    <button
+                      onClick={cancelClearCart}
+                      className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={confirmClearCart}
+                      className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    >
+                      Clear All
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </>
       )}
     </AnimatePresence>

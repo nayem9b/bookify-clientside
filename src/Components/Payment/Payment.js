@@ -125,7 +125,7 @@ const Payment = () => {
                 </div>
                 <div className="flex justify-between mb-2">
                   <span className="text-gray-600">Shipping</span>
-                  <span>Free</span>
+                  <span className='text-green-600 font-medium'>Free</span>
                 </div>
                 <div className="flex justify-between font-semibold text-lg mt-4 pt-4 border-t border-gray-200">
                   <span>Total</span>

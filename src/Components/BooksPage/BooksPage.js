@@ -202,7 +202,7 @@ const BooksPage = () => {
           <div className="bg-white rounded-lg shadow-md p-4 sticky top-24">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-                <FiFilter className="mr-2 text-slate-400" />
+                <FiFilter className="mr-2 text-indigo-600" />
                 Categories
               </h3>
               <button
@@ -223,7 +223,7 @@ const BooksPage = () => {
                     value={categorySearch}
                     onChange={(e) => setCategorySearch(e.target.value)}
                     placeholder="Search categories"
-                    className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                    className="w-full px-3 py-2 border border-indigo-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
                     aria-label="Search categories"
                   />
                 </div>
@@ -255,8 +255,8 @@ const BooksPage = () => {
                           aria-pressed={active}
                           className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
                             active
-                              ? "bg-slate-400 text-white shadow-sm"
-                              : "bg-slate-100 text-slate-800 hover:bg-slate-200"
+                              ? "bg-indigo-600 text-white shadow-sm"
+                              : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                           }`}
                         >
                           <span className="truncate max-w-[10rem]">

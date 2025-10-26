@@ -151,8 +151,8 @@ const Navbar = () => {
   const additionalNavItems = [
     { name: "About Us", path: "/about" },
     { name: "Contact", path: "/contact" },
-    { name: "Blog", path: "/blog" },
-    { name: "Help Center", path: "/help" },
+    // { name: "Blog", path: "/blog" },
+    // { name: "Help Center", path: "/help" },
   ];
 
   return (
@@ -180,14 +180,14 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
-            {/* Home */}
+            {/* Home
             <Link
               to="/"
               className="flex items-center space-x-2 text-gray-700 hover:text-indigo-600 transition-colors font-medium"
             >
               <FiHome className="w-4 h-4" />
               <span>Home</span>
-            </Link>
+            </Link> */}
 
             {/* Categories Dropdown */}
             <div 
