@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight, FaSearch } from "react-icons/fa";
 import { FiShoppingCart, FiFilter } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
+import { setWishlist, addToWishlist } from "../../redux/slices/wishlistSlice";
+import { AuthContext } from "../../contexts/AuthContext";
 import { toast } from "react-hot-toast";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 // API base (top-level so it's stable for hooks)
@@ -52,6 +54,62 @@ const BooksPage = () => {
     toast.success(`${book.title} added to cart!`, {
       position: "bottom-right",
     });
+  };
+
+  const { user } = useContext(AuthContext);
+  console.log(user);
+
+  const handleAddToWishlist = async (book) => {
+    // Require authentication
+    if (!user || (!user.uid && !user.id && !user._id)) {
+      toast.error("Please sign in to add items to your wishlist");
+      return;
+    }
+
+    const userId = user.uid || user.id || user._id;
+    // Normalize bookId from several possible shapes (book._id, book.id, book.bookId or a raw id)
+    let bookId = book && (book._id || book.id || book.bookId || null);
+    // If caller passed a minimal payload like { bookId: '...' } as `book`, handle that too
+    if (!bookId && book && typeof book === "object" && book.bookId)
+      bookId = book.bookId;
+    if (bookId != null) bookId = String(bookId);
+    const API = API_BASE;
+
+    try {
+      const token = localStorage.getItem("bookify-token");
+      console.debug("Wishlist PATCH ->", { userId, bookId });
+      const headers = { "Content-Type": "application/json" };
+      if (token) headers.Authorization = `Bearer ${token}`;
+
+      const res = await fetch(`${API}/users/${userId}/wishlist`, {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ bookId }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+      if (!res.ok) {
+        console.error("Failed to add wishlist item", data);
+        toast.error(data?.message || "Failed to add to wishlist");
+        return;
+      }
+
+      // Update local wishlist state from server response (preferred)
+      if (data?.wishlist) {
+        dispatch(setWishlist(data.wishlist));
+      } else {
+        // Fallback: optimistically add minimal item
+        dispatch(addToWishlist({ id: bookId, title: book.title }));
+      }
+
+      toast.success(`${book.title || "Item"} added to wishlist!`, {
+        position: "bottom-right",
+      });
+    } catch (err) {
+      console.error("Error adding to wishlist", err);
+      toast.error("Error adding to wishlist");
+    }
   };
 
   const firstLoadRef = useRef(true);
@@ -347,10 +405,9 @@ const BooksPage = () => {
                   setSearchTerm(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="
-      group
+                className="group
       block w-full pl-10 pr-4 py-2.5 
-      rounded-xl border border-slate-200 
+      rounded-xl border border-indigo-400 
       bg-slate-50/70 backdrop-blur-sm 
       text-slate-800 placeholder-slate-400
       shadow-sm
@@ -375,7 +432,7 @@ const BooksPage = () => {
         appearance-none
         block w-24 px-3 py-2
         text-sm font-medium text-slate-700
-        bg-white border border-slate-200 rounded-lg
+        bg-white border border-indigo-400 rounded-lg
         shadow-sm
         focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400
         transition-all duration-200 ease-out
@@ -397,11 +454,11 @@ const BooksPage = () => {
                     strokeWidth={2}
                     stroke="currentColor"
                   >
-                    <path
+                    {/* <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       d="M6 9l6 6 6-6"
-                    />
+                    /> */}
                   </svg>
                 </div>
               </div>
@@ -413,7 +470,7 @@ const BooksPage = () => {
           </motion.div>
 
           {/* Books Grid */}
-          {filteredBooks.length === 0 ? (
+          {filteredBooks?.length === 0 ? (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -468,7 +525,7 @@ const BooksPage = () => {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            // Add to wishlist handler
+                            handleAddToWishlist(book);
                           }}
                           className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 text-slate-600 hover:text-red-500 shadow-sm transition-opacity duration-200 opacity-0 group-hover:opacity-90"
                           aria-label="Add to wishlist"

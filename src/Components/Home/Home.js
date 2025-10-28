@@ -230,7 +230,7 @@ const Home = () => {
       >
         {/* Skewed Background */}
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 -skew-y-3 transform origin-top-left"></div>
-        
+
         {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
@@ -255,7 +255,7 @@ const Home = () => {
               <FiBookOpen className="w-4 h-4" />
               <span>Explore Categories</span>
             </motion.div>
-            
+
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 relative">
               Browse by Category
               <motion.div
@@ -266,9 +266,10 @@ const Home = () => {
                 transition={{ duration: 1, delay: 0.5 }}
               />
             </h2>
-            
+
             <p className="text-xl text-indigo-100 max-w-3xl mx-auto leading-relaxed">
-              Discover books across all genres and find your next favorite read in our carefully curated categories.
+              Discover books across all genres and find your next favorite read
+              in our carefully curated categories.
             </p>
           </motion.div>
 
@@ -393,7 +394,7 @@ const Home = () => {
               <FiTrendingUp className="w-4 h-4" />
               <span>Trending This Week</span>
             </motion.div>
-            
+
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 relative">
               <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Trending Now
@@ -406,10 +407,14 @@ const Home = () => {
                 transition={{ duration: 1, delay: 0.5 }}
               />
             </h2>
-            
+
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Discover the most popular books our readers can't put down. 
-              <span className="text-indigo-600 font-semibold"> Updated every hour</span> with real-time trending data.
+              Discover the most popular books our readers can't put down.
+              <span className="text-indigo-600 font-semibold">
+                {" "}
+                Updated every hour
+              </span>{" "}
+              with real-time trending data.
             </p>
           </motion.div>
 
@@ -421,14 +426,21 @@ const Home = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            {["All", "Fiction", "Non-Fiction", "Mystery", "Romance", "Sci-Fi"].map((filter, index) => (
+            {[
+              "All",
+              "Fiction",
+              "Non-Fiction",
+              "Mystery",
+              "Romance",
+              "Sci-Fi",
+            ].map((filter, index) => (
               <motion.button
                 key={filter}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                  index === 0 
-                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg" 
+                  index === 0
+                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
                     : "bg-white text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 border border-gray-200"
                 }`}
                 initial={{ opacity: 0, y: 10 }}
@@ -469,24 +481,28 @@ const Home = () => {
                 >
                   {/* Glow Effect */}
                   <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl opacity-0 group-hover:opacity-20 blur transition duration-500"></div>
-                  
+
                   <div className="relative h-full flex flex-col bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100/50 backdrop-blur-sm">
                     {/* Enhanced Image Section */}
                     <div className="relative pt-[150%] overflow-hidden">
-                      <img
+                      {/* <img
                         className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                        src={book?.image || "/placeholder-book.jpg"}
+                        src={
+                          book?.image ||
+                          "../../Assets/Companies/placeholder_book.png"
+                        }
                         alt={book?.title || "Book Cover"}
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = "/placeholder-book.jpg";
+                          e.target.src =
+                            "../../Assets/Companies/placeholder_book.png";
                         }}
-                      />
-                      
+                      /> */}
+
                       {/* Multi-layer Overlays */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      
+
                       {/* Enhanced Badges */}
                       <div className="absolute top-4 left-4 flex flex-col gap-2">
                         <span className="px-3 py-1.5 text-xs font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full shadow-lg">
@@ -496,7 +512,7 @@ const Home = () => {
                           Bestseller
                         </span>
                       </div>
-                      
+
                       {/* Quick Actions */}
                       <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
                         <motion.button
@@ -514,13 +530,17 @@ const Home = () => {
                           <FiStar className="w-4 h-4 text-amber-500" />
                         </motion.button>
                       </div>
-                      
+
                       {/* Rating Badge */}
                       <div className="absolute bottom-4 left-4">
                         <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
                           <div className="flex text-amber-400">
                             {[...Array(5)].map((_, i) => (
-                              <svg key={i} className="w-3 h-3 fill-current" viewBox="0 0 20 20">
+                              <svg
+                                key={i}
+                                className="w-3 h-3 fill-current"
+                                viewBox="0 0 20 20"
+                              >
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                               </svg>
                             ))}
@@ -541,7 +561,7 @@ const Home = () => {
                         <p className="text-indigo-600 font-semibold mb-3 text-sm">
                           by {book?.author || "Unknown Author"}
                         </p>
-                        
+
                         {/* Enhanced Stats */}
                         <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
                           <div className="flex items-center gap-1">
@@ -574,7 +594,7 @@ const Home = () => {
                             </div>
                           </div>
                         </div>
-                        
+
                         <div className="flex gap-2">
                           <motion.button
                             whileHover={{ scale: 1.02 }}
@@ -612,7 +632,8 @@ const Home = () => {
                   Want to see more trending books?
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  Explore our complete collection of trending books and discover your next favorite read.
+                  Explore our complete collection of trending books and discover
+                  your next favorite read.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
@@ -648,7 +669,7 @@ const Home = () => {
       >
         {/* Skewed Background */}
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 -skew-y-3 transform origin-top-left"></div>
-        
+
         {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
@@ -673,7 +694,7 @@ const Home = () => {
               <FiBookOpen className="w-4 h-4" />
               <span>AI-Powered Recommendations</span>
             </motion.div>
-            
+
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 relative">
               Personalized for You
               <motion.div
@@ -684,9 +705,10 @@ const Home = () => {
                 transition={{ duration: 1, delay: 0.5 }}
               />
             </h2>
-            
+
             <p className="text-xl text-indigo-100 max-w-3xl mx-auto leading-relaxed">
-              Discover books tailored to your reading preferences with our advanced AI recommendation engine.
+              Discover books tailored to your reading preferences with our
+              advanced AI recommendation engine.
             </p>
           </motion.div>
 
@@ -697,22 +719,34 @@ const Home = () => {
                 description: "Books similar to what you've loved before",
                 icon: <FiBook className="w-6 h-6" />,
                 color: "from-white/20 to-white/30",
-                books: ["The Silent Patient", "Where the Crawdads Sing", "Educated"]
+                books: [
+                  "The Silent Patient",
+                  "Where the Crawdads Sing",
+                  "Educated",
+                ],
               },
               {
                 title: "Trending in Your Genre",
                 description: "Popular books in your favorite categories",
                 icon: <FiTrendingUp className="w-6 h-6" />,
                 color: "from-white/20 to-white/30",
-                books: ["Project Hail Mary", "The Midnight Library", "Klara and the Sun"]
+                books: [
+                  "Project Hail Mary",
+                  "The Midnight Library",
+                  "Klara and the Sun",
+                ],
               },
               {
                 title: "Editor's Choice",
                 description: "Handpicked by our book experts",
                 icon: <FiAward className="w-6 h-6" />,
                 color: "from-white/20 to-white/30",
-                books: ["The Seven Husbands of Evelyn Hugo", "Circe", "The Song of Achilles"]
-              }
+                books: [
+                  "The Seven Husbands of Evelyn Hugo",
+                  "Circe",
+                  "The Song of Achilles",
+                ],
+              },
             ].map((recommendation, index) => (
               <motion.div
                 key={index}
@@ -725,14 +759,23 @@ const Home = () => {
               >
                 <div className="absolute -inset-1 bg-white/20 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"></div>
                 <div className="relative bg-white/10 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-white/20 group-hover:bg-white/20">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${recommendation.color} flex items-center justify-center text-white mb-6 shadow-lg`}>
+                  <div
+                    className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${recommendation.color} flex items-center justify-center text-white mb-6 shadow-lg`}
+                  >
                     {recommendation.icon}
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-3">{recommendation.title}</h3>
-                  <p className="text-indigo-100 mb-6 text-lg">{recommendation.description}</p>
+                  <h3 className="text-2xl font-bold text-white mb-3">
+                    {recommendation.title}
+                  </h3>
+                  <p className="text-indigo-100 mb-6 text-lg">
+                    {recommendation.description}
+                  </p>
                   <div className="space-y-3 mb-6">
                     {recommendation.books.map((book, bookIndex) => (
-                      <div key={bookIndex} className="flex items-center gap-3 text-white">
+                      <div
+                        key={bookIndex}
+                        className="flex items-center gap-3 text-white"
+                      >
                         <div className="w-2 h-2 bg-white rounded-full"></div>
                         <span className="text-sm font-medium">{book}</span>
                       </div>
@@ -763,7 +806,8 @@ const Home = () => {
                 Ready to discover your next favorite book?
               </h3>
               <p className="text-indigo-100 mb-8 text-lg">
-                Get personalized recommendations based on your reading history and preferences.
+                Get personalized recommendations based on your reading history
+                and preferences.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <motion.button
@@ -802,18 +846,52 @@ const Home = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Quick Access</h2>
-            <p className="text-gray-600">Everything you need, right at your fingertips</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Quick Access
+            </h2>
+            <p className="text-gray-600">
+              Everything you need, right at your fingertips
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {[
-              { name: "New Releases", icon: <FiBook className="w-6 h-6" />, color: "indigo", link: "/new-releases" },
-              { name: "Best Sellers", icon: <FiAward className="w-6 h-6" />, color: "amber", link: "/bestsellers" },
-              { name: "Free Books", icon: <FiBookOpen className="w-6 h-6" />, color: "green", link: "/free-books" },
-              { name: "Audio Books", icon: <FiBookmark className="w-6 h-6" />, color: "purple", link: "/audiobooks" },
-              { name: "My Library", icon: <FiUsers className="w-6 h-6" />, color: "blue", link: "/library" },
-              { name: "Wishlist", icon: <FiStar className="w-6 h-6" />, color: "pink", link: "/wishlist" }
+              {
+                name: "New Releases",
+                icon: <FiBook className="w-6 h-6" />,
+                color: "indigo",
+                link: "/new-releases",
+              },
+              {
+                name: "Best Sellers",
+                icon: <FiAward className="w-6 h-6" />,
+                color: "amber",
+                link: "/bestsellers",
+              },
+              {
+                name: "Free Books",
+                icon: <FiBookOpen className="w-6 h-6" />,
+                color: "green",
+                link: "/free-books",
+              },
+              {
+                name: "Audio Books",
+                icon: <FiBookmark className="w-6 h-6" />,
+                color: "purple",
+                link: "/audiobooks",
+              },
+              {
+                name: "My Library",
+                icon: <FiUsers className="w-6 h-6" />,
+                color: "blue",
+                link: "/library",
+              },
+              {
+                name: "Wishlist",
+                icon: <FiStar className="w-6 h-6" />,
+                color: "pink",
+                link: "/wishlist",
+              },
             ].map((item, index) => (
               <motion.div
                 key={index}
@@ -828,10 +906,14 @@ const Home = () => {
                   to={item.link}
                   className={`block p-6 rounded-2xl bg-gradient-to-br from-${item.color}-50 to-${item.color}-100 hover:from-${item.color}-100 hover:to-${item.color}-200 transition-all duration-300 text-center group-hover:shadow-lg`}
                 >
-                  <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-${item.color}-500 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}>
+                  <div
+                    className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-${item.color}-500 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}
+                  >
                     {item.icon}
                   </div>
-                  <h3 className="font-semibold text-gray-900 text-sm">{item.name}</h3>
+                  <h3 className="font-semibold text-gray-900 text-sm">
+                    {item.name}
+                  </h3>
                 </Link>
               </motion.div>
             ))}
@@ -866,7 +948,8 @@ const Home = () => {
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Join thousands of readers and begin your personalized reading adventure with our community-driven platform.
+              Join thousands of readers and begin your personalized reading
+              adventure with our community-driven platform.
             </p>
           </motion.div>
 
@@ -882,12 +965,22 @@ const Home = () => {
                 <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center text-white text-2xl font-bold">
                   12
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Join Our Community</h3>
-                <p className="text-gray-600 mb-4">Connect with fellow book lovers and discover new favorites together!</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Join Our Community
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Connect with fellow book lovers and discover new favorites
+                  together!
+                </p>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2 rounded-full" style={{ width: '75%' }}></div>
+                  <div
+                    className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2 rounded-full"
+                    style={{ width: "75%" }}
+                  ></div>
                 </div>
-                <p className="text-sm text-gray-500 mt-2">50,000+ active readers</p>
+                <p className="text-sm text-gray-500 mt-2">
+                  50,000+ active readers
+                </p>
               </div>
             </motion.div>
 
@@ -902,11 +995,19 @@ const Home = () => {
                 <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-teal-500 to-cyan-500 flex items-center justify-center text-white text-2xl font-bold">
                   5
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Discover New Books</h3>
-                <p className="text-gray-600 mb-4">Explore our curated collection of trending and recommended books!</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Discover New Books
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Explore our curated collection of trending and recommended
+                  books!
+                </p>
                 <div className="flex justify-center gap-2">
                   {[...Array(5)].map((_, i) => (
-                    <div key={i} className="w-8 h-8 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    <div
+                      key={i}
+                      className="w-8 h-8 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                    >
                       📚
                     </div>
                   ))}
@@ -925,8 +1026,12 @@ const Home = () => {
                 <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white text-2xl font-bold">
                   2.4k
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Get Started Today</h3>
-                <p className="text-gray-600 mb-4">Sign up now and get access to thousands of books!</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Get Started Today
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Sign up now and get access to thousands of books!
+                </p>
                 <div className="text-3xl font-bold text-cyan-600">🚀</div>
               </div>
             </motion.div>
@@ -961,7 +1066,8 @@ const Home = () => {
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Connect with fellow book lovers, share reviews, and discover your next favorite read.
+              Connect with fellow book lovers, share reviews, and discover your
+              next favorite read.
             </p>
           </motion.div>
 
@@ -972,29 +1078,29 @@ const Home = () => {
                 description: "Join discussions with 10,000+ active members",
                 icon: <FiUsers className="w-8 h-8" />,
                 color: "from-violet-500 to-purple-500",
-                members: "10,000+"
+                members: "10,000+",
               },
               {
                 title: "Reading Challenges",
                 description: "Participate in monthly reading challenges",
                 icon: <FiAward className="w-8 h-8" />,
                 color: "from-purple-500 to-indigo-500",
-                members: "5,000+"
+                members: "5,000+",
               },
               {
                 title: "Author Events",
                 description: "Meet your favorite authors in virtual events",
                 icon: <FiBookOpen className="w-8 h-8" />,
                 color: "from-indigo-500 to-blue-500",
-                members: "2,000+"
+                members: "2,000+",
               },
               {
                 title: "Reviews & Ratings",
                 description: "Share your thoughts and help others discover",
                 icon: <FiStar className="w-8 h-8" />,
                 color: "from-blue-500 to-cyan-500",
-                members: "50,000+"
-              }
+                members: "50,000+",
+              },
             ].map((community, index) => (
               <motion.div
                 key={index}
@@ -1005,13 +1111,19 @@ const Home = () => {
                 whileHover={{ y: -5, scale: 1.02 }}
                 className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${community.color} flex items-center justify-center text-white mb-4`}>
+                <div
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${community.color} flex items-center justify-center text-white mb-4`}
+                >
                   {community.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{community.title}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  {community.title}
+                </h3>
                 <p className="text-gray-600 mb-4">{community.description}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-gray-500">{community.members} members</span>
+                  <span className="text-sm font-semibold text-gray-500">
+                    {community.members} members
+                  </span>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -1277,14 +1389,15 @@ const Home = () => {
               <FiStar className="w-4 h-4" />
               <span>Community Love</span>
             </motion.div>
-            
+
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                 What Our Readers Say
               </span>
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-              Real stories from our amazing community of book lovers around the world
+              Real stories from our amazing community of book lovers around the
+              world
             </p>
           </motion.div>
 
@@ -1294,7 +1407,7 @@ const Home = () => {
               <motion.div
                 className="flex gap-8"
                 animate={{
-                  x: [0, -100 * 3] // Move 3 cards worth
+                  x: [0, -100 * 3], // Move 3 cards worth
                 }}
                 transition={{
                   x: {
@@ -1308,65 +1421,82 @@ const Home = () => {
               >
                 {[
                   {
-                    quote: "Bookify has completely transformed my reading habits. The AI recommendations are spot-on and I've discovered so many amazing books I never would have found otherwise!",
+                    quote:
+                      "Bookify has completely transformed my reading habits. The AI recommendations are spot-on and I've discovered so many amazing books I never would have found otherwise!",
                     author: "Sarah Johnson",
                     role: "Avid Reader",
-                    image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+                    image:
+                      "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
                     twitter: "@sarahj_reads",
                     rating: 5,
-                    date: "2 days ago"
+                    date: "2 days ago",
                   },
                   {
-                    quote: "The user experience is absolutely seamless! I love how easy it is to discover new authors and the delivery is always prompt. My book club members are jealous!",
+                    quote:
+                      "The user experience is absolutely seamless! I love how easy it is to discover new authors and the delivery is always prompt. My book club members are jealous!",
                     author: "Michael Chen",
                     role: "Book Club Organizer",
-                    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+                    image:
+                      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
                     twitter: "@mikechen_books",
                     rating: 5,
-                    date: "1 week ago"
+                    date: "1 week ago",
                   },
                   {
-                    quote: "As a student, I appreciate the affordable prices and the wide range of academic books. The study guides and summaries are incredibly helpful for my courses!",
+                    quote:
+                      "As a student, I appreciate the affordable prices and the wide range of academic books. The study guides and summaries are incredibly helpful for my courses!",
                     author: "Emily Rodriguez",
                     role: "University Student",
-                    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+                    image:
+                      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
                     twitter: "@emily_studies",
                     rating: 5,
-                    date: "3 days ago"
+                    date: "3 days ago",
                   },
                   {
-                    quote: "The personalized reading lists are incredible! I've read more books in the past 6 months than I did in the previous 2 years. Bookify is a game-changer!",
+                    quote:
+                      "The personalized reading lists are incredible! I've read more books in the past 6 months than I did in the previous 2 years. Bookify is a game-changer!",
                     author: "David Kim",
                     role: "Software Engineer",
-                    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+                    image:
+                      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
                     twitter: "@davidkim_tech",
                     rating: 5,
-                    date: "5 days ago"
+                    date: "5 days ago",
                   },
                   {
-                    quote: "The community features are amazing! I've connected with so many like-minded readers and discovered books through their recommendations. It's like having a personal book club!",
+                    quote:
+                      "The community features are amazing! I've connected with so many like-minded readers and discovered books through their recommendations. It's like having a personal book club!",
                     author: "Lisa Wang",
                     role: "Marketing Manager",
-                    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
+                    image:
+                      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
                     twitter: "@lisawang_reads",
                     rating: 5,
-                    date: "1 day ago"
+                    date: "1 day ago",
                   },
                   {
-                    quote: "The audio book integration is fantastic! I can seamlessly switch between reading and listening during my commute. The narrator quality is top-notch!",
+                    quote:
+                      "The audio book integration is fantastic! I can seamlessly switch between reading and listening during my commute. The narrator quality is top-notch!",
                     author: "James Wilson",
                     role: "Business Analyst",
-                    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+                    image:
+                      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
                     twitter: "@jamesw_business",
                     rating: 5,
-                    date: "4 days ago"
-                  }
+                    date: "4 days ago",
+                  },
                 ].map((testimonial, index) => (
                   <motion.div
                     key={index}
                     className="flex-shrink-0 w-96 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 hover:shadow-2xl transition-all duration-300 group cursor-pointer"
                     // whileHover={{ y: -8, scale: 1.02 }}
-                    onClick={() => window.open(`https://x.com/${testimonial.twitter.replace('@', '')}`, '_blank')}
+                    onClick={() =>
+                      window.open(
+                        `https://x.com/${testimonial.twitter.replace("@", "")}`,
+                        "_blank"
+                      )
+                    }
                   >
                     {/* Header with rating and date */}
                     <div className="flex items-center justify-between mb-6">
@@ -1378,7 +1508,9 @@ const Home = () => {
                           />
                         ))}
                       </div>
-                      <span className="text-sm text-gray-500">{testimonial.date}</span>
+                      <span className="text-sm text-gray-500">
+                        {testimonial.date}
+                      </span>
                     </div>
 
                     {/* Quote */}
@@ -1401,14 +1533,18 @@ const Home = () => {
                           <h4 className="font-semibold text-gray-900 text-sm">
                             {testimonial.author}
                           </h4>
-                          <p className="text-xs text-gray-500">{testimonial.role}</p>
+                          <p className="text-xs text-gray-500">
+                            {testimonial.role}
+                          </p>
                         </div>
                       </div>
-                      
+
                       {/* X (Twitter) Icon */}
                       <div className="flex items-center space-x-2 text-indigo-600 group-hover:text-indigo-700 transition-colors">
                         <FaXTwitter className="w-5 h-5" />
-                        <span className="text-sm font-medium">{testimonial.twitter}</span>
+                        <span className="text-sm font-medium">
+                          {testimonial.twitter}
+                        </span>
                       </div>
                     </div>
 
