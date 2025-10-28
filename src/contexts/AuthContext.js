@@ -7,6 +7,7 @@ import {
   getAuth,
   signOut,
   signInWithRedirect,
+  signInWithPopup,
 } from "firebase/auth";
 import app from "../Components/Firebase/Firebase.config";
 
@@ -27,7 +28,7 @@ function AuthProvider({ children }) {
   //GoogleSignIn
   const googleSignIn = () => {
     setLoading(true);
-    return signInWithRedirect(auth, googleProvider);
+    return signInWithPopup(auth, googleProvider);
   };
   //User SignIn
   const userSignIn = (email, password) => {

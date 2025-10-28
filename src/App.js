@@ -15,7 +15,7 @@ function App() {
         <PersistGate loading={null} persistor={persistor}>
           <div>
             <RouterProvider router={router} />
-            <Toaster position="top-right" reverseOrder={false} />
+            <Toaster position="bottom-center" reverseOrder={false} />
           </div>
         </PersistGate>
       </Provider>
