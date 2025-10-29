@@ -10,11 +10,12 @@ RUN yarn build
 # -------- Stage 2: Runtime --------
 FROM node:18-alpine AS runner
 WORKDIR /myapp
-COPY package.json yarn.lock ./
-RUN yarn install --production --non-interactive --no-progress --legacy-peer-deps
+
+# Install a simple HTTP server for serving static files
+RUN npm install -g serve
+
 COPY --from=builder /myapp/build ./build
 COPY --from=builder /myapp/public ./public
-RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
-USER nodejs
+
 EXPOSE 5000
-CMD ["yarn", "start"]
+CMD ["serve", "-s", "build", "-l", "5000"]
