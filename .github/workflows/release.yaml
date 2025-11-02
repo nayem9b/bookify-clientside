@@ -8,7 +8,7 @@ on:
       - main  
 
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.repository_owner }}/bookify-serverside 
+  DOCKER_IMAGE: ghcr.io/${{ github.repository_owner }}/bookify-clientside 
   VERSION: ${{ github.ref_name }}
 
 
