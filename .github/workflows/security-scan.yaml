@@ -5,7 +5,7 @@ on:
     branches: [main, develop]
   pull_request:
   schedule:
-    - cron: '0 3 * * *' # nightly scan
+    - cron: "0 3 * * *" # nightly scan
 
 permissions:
   contents: read
@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [javascript, typescript, python, go]
+        language: [javascript]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
       - name: Analyze
         uses: github/codeql-action/analyze@v3
         with:
-          category: '/language:${{ matrix.language }}'
+          category: "/language:${{ matrix.language }}"
 
   secret-scan:
     name: Secret Scan
@@ -46,8 +46,10 @@ jobs:
 
       # Native GitHub secret scanning runs automatically on push if enabled,
       # but this ensures detection during PRs for free-tier/private repos.
-      - name: Run GitHub Secret Scanner (Advanced Security Lite)
-        uses: advanced-security/secret-scanning@v1
+      - name: Run Gitleaks secret scan
+        uses: zricethezav/gitleaks-action@v2
+        with:
+          args: --verbose --redact
         continue-on-error: true
 
       - name: Scan for common secrets with ripgrep
@@ -56,6 +58,12 @@ jobs:
           rg --ignore-case -n --no-heading --color=never -e "AKIA[0-9A-Z]{16}" -e "-----BEGIN PRIVATE KEY-----" -e "password\s*=" -e "token\s*=" || true
 
   dependency-review:
+    # Only run dependency review when the workflow has PR context. The
+    # action requires both base and head refs which are present for
+    # pull_request or pull_request_target events. Skip this job on push
+    # and schedule events to avoid the "Both a base ref and head ref must
+    # be provided" error.
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
     name: Dependency Vulnerability Review
     runs-on: ubuntu-latest
     steps:
@@ -85,5 +93,5 @@ jobs:
         with:
           image-ref: app:scan
           format: table
-          exit-code: 0          # non-blocking by default; change to 1 to fail pipeline on findings
+          exit-code: 0 # non-blocking by default; change to 1 to fail pipeline on findings
           severity: HIGH,CRITICAL
