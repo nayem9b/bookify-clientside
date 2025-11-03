@@ -62,14 +62,19 @@ export const SecurityUtils = {
   sanitizeString: (input) => {
     if (typeof input !== 'string') return '';
     
-    // Remove potentially dangerous characters
-    return input
-      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-      .replace(/javascript:/gi, '')
-      .replace(/on\w+\s*=/gi, '')
-      .replace(/<iframe\b[^>]*>/gi, '')
-      .replace(/<object\b[^>]*>/gi, '')
-      .replace(/<embed\b[^>]*>/gi, '');
+    // Remove potentially dangerous characters by repeatedly applying all dangerous pattern replacements
+    let previous, sanitized = input;
+    do {
+      previous = sanitized;
+      sanitized = sanitized
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/javascript:/gi, '')
+        .replace(/on\w+\s*=/gi, '')
+        .replace(/<iframe\b[^>]*>/gi, '')
+        .replace(/<object\b[^>]*>/gi, '')
+        .replace(/<embed\b[^>]*>/gi, '');
+    } while (sanitized !== previous);
+    return sanitized;
   },
 
   /**
