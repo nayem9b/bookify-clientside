@@ -6,6 +6,26 @@
     <link rel="shortcut icon" href="icons8-open-book-64.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <!-- Security Headers -->
+     
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.firebase.com https://*.googleapis.com https://*.gstatic.com https://www.google.com https://www.gstatic.com https://apis.google.com; 
+                   style-src 'self' 'unsafe-inline' https://*.googleapis.com https://fonts.googleapis.com; 
+                   img-src 'self' data: https: http:; 
+                   font-src 'self' https://*.gstatic.com https://fonts.gstatic.com; 
+                   connect-src 'self' https://*.firebase.com https://*.googleapis.com https://*.google.com wss://*.firebase.com; 
+                   frame-src https://*.google.com https://*.googleapis.com; 
+                   object-src 'none'; 
+                   base-uri 'self'; 
+                   form-action 'self'; 
+                   frame-ancestors 'none'; 
+                   upgrade-insecure-requests;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <!-- End Security Headers -->
     <meta
       name="description"
       content="Web site created using create-react-app"
