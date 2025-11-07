@@ -1,13 +1,13 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import { 
-  FiSearch, 
-  FiUser, 
-  FiHeart, 
-  FiBook, 
-  FiMenu, 
-  FiX, 
+import {
+  FiSearch,
+  FiUser,
+  FiHeart,
+  FiBook,
+  FiMenu,
+  FiX,
   FiChevronDown,
   FiHome,
   FiList,
@@ -22,7 +22,7 @@ import {
   FiShoppingCart,
   FiTrendingUp,
   FiAward,
-  FiBookmark
+  FiBookmark,
 } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,7 +31,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import navicon from "../../Images/icons8-open-book-64.png";
 import CartSidebar from "../Cart/CartSidebar";
 import WishlistSidebar from "../Wishlist/WishlistSidebar";
-import { toggleWishlist } from '../../redux/slices/wishlistSlice';
+import { toggleWishlist } from "../../redux/slices/wishlistSlice";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,13 +45,18 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { items } = useSelector((state) => state.cart);
-  const wishlistCount = useSelector((state) => (state.wishlist && state.wishlist.items) ? state.wishlist.items.length : 0);
+  const wishlistCount = useSelector((state) =>
+    state.wishlist && state.wishlist.items ? state.wishlist.items.length : 0
+  );
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
 
   // Close dropdowns when clicking outside
   const userMenuRef = useRef(null);
   const categoriesMenuRef = useRef(null);
   const discoverMenuRef = useRef(null);
+  const notificationsMenuRef = useRef(null);
+
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -59,11 +64,18 @@ const Navbar = () => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
         setIsUserMenuOpen(false);
       }
+      // Close notifications when clicking outside
+      if (
+        notificationsMenuRef.current &&
+        !notificationsMenuRef.current.contains(event.target)
+      ) {
+        setIsNotificationsOpen(false);
+      }
       // Categories and Discover are now hover-based, so we don't need click outside detection for them
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = async () => {
@@ -87,67 +99,157 @@ const Navbar = () => {
   };
 
   const categories = [
-    { name: "Fiction", icon: <FiBook className="w-4 h-4" />, path: "/category/fiction" },
-    { name: "Non-Fiction", icon: <FiBookOpen className="w-4 h-4" />, path: "/category/non-fiction" },
-    { name: "Mystery", icon: <FiBookmark className="w-4 h-4" />, path: "/category/mystery" },
-    { name: "Romance", icon: <FiHeart className="w-4 h-4" />, path: "/category/romance" },
-    { name: "Science Fiction", icon: <FiStar className="w-4 h-4" />, path: "/category/sci-fi" },
-    { name: "Biography", icon: <FiUser className="w-4 h-4" />, path: "/category/biography" },
-    { name: "History", icon: <FiBook className="w-4 h-4" />, path: "/category/history" },
-    { name: "Self-Help", icon: <FiTrendingUp className="w-4 h-4" />, path: "/category/self-help" },
+    {
+      name: "Fiction",
+      icon: <FiBook className="w-4 h-4" />,
+      path: "/category/fiction",
+    },
+    {
+      name: "Non-Fiction",
+      icon: <FiBookOpen className="w-4 h-4" />,
+      path: "/category/non-fiction",
+    },
+    {
+      name: "Mystery",
+      icon: <FiBookmark className="w-4 h-4" />,
+      path: "/category/mystery",
+    },
+    {
+      name: "Romance",
+      icon: <FiHeart className="w-4 h-4" />,
+      path: "/category/romance",
+    },
+    {
+      name: "Science Fiction",
+      icon: <FiStar className="w-4 h-4" />,
+      path: "/category/sci-fi",
+    },
+    {
+      name: "Biography",
+      icon: <FiUser className="w-4 h-4" />,
+      path: "/category/biography",
+    },
+    {
+      name: "History",
+      icon: <FiBook className="w-4 h-4" />,
+      path: "/category/history",
+    },
+    {
+      name: "Self-Help",
+      icon: <FiTrendingUp className="w-4 h-4" />,
+      path: "/category/self-help",
+    },
   ];
 
   const userMenuItems = [
-    { name: "Dashboard", icon: <FiHome className="w-4 h-4" />, path: "/dashboard" },
-    { name: "My Orders", icon: <FiShoppingBag className="w-4 h-4" />, path: "/dashboard/myorders" },
-    { name: "Wishlist", icon: <FiHeart className="w-4 h-4" />, path: "/wishlist" },
-    { name: "Settings", icon: <FiSettings className="w-4 h-4" />, path: "/settings" },
-    { name: "Help & Support", icon: <FiHelpCircle className="w-4 h-4" />, path: "/help" },
+    {
+      name: "Dashboard",
+      icon: <FiHome className="w-4 h-4" />,
+      path: "/dashboard",
+    },
+    {
+      name: "My Orders",
+      icon: <FiShoppingBag className="w-4 h-4" />,
+      path: "/dashboard/myorders",
+    },
+    {
+      name: "Wishlist",
+      icon: <FiHeart className="w-4 h-4" />,
+      path: "/wishlist",
+    },
+    {
+      name: "Settings",
+      icon: <FiSettings className="w-4 h-4" />,
+      path: "/settings",
+    },
+    {
+      name: "Help & Support",
+      icon: <FiHelpCircle className="w-4 h-4" />,
+      path: "/help",
+    },
   ];
 
   const quickLinks = [
-    { name: "New Releases", icon: <FiBook className="w-4 h-4" />, path: "/new-releases" },
-    { name: "Best Sellers", icon: <FiAward className="w-4 h-4" />, path: "/bestsellers" },
-    { name: "Free Books", icon: <FiGift className="w-4 h-4" />, path: "/free-books" },
-    { name: "Audio Books", icon: <FiBookOpen className="w-4 h-4" />, path: "/audiobooks" },
+    {
+      name: "New Releases",
+      icon: <FiBook className="w-4 h-4" />,
+      path: "/new-releases",
+    },
+    {
+      name: "Best Sellers",
+      icon: <FiAward className="w-4 h-4" />,
+      path: "/bestsellers",
+    },
+    {
+      name: "Free Books",
+      icon: <FiGift className="w-4 h-4" />,
+      path: "/free-books",
+    },
+    {
+      name: "Audio Books",
+      icon: <FiBookOpen className="w-4 h-4" />,
+      path: "/audiobooks",
+    },
   ];
 
   const discoverItems = [
-    { 
-      name: "Trending Now", 
-      icon: <FiTrendingUp className="w-4 h-4" />, 
+    {
+      name: "Trending Now",
+      icon: <FiTrendingUp className="w-4 h-4" />,
       path: "/trending",
-      description: "What's popular right now"
+      description: "What's popular right now",
     },
-    { 
-      name: "Editor's Choice", 
-      icon: <FiStar className="w-4 h-4" />, 
+    {
+      name: "Editor's Choice",
+      icon: <FiStar className="w-4 h-4" />,
       path: "/editors-choice",
-      description: "Handpicked by our experts"
+      description: "Handpicked by our experts",
     },
-    { 
-      name: "Book of the Month", 
-      icon: <FiAward className="w-4 h-4" />, 
+    {
+      name: "Book of the Month",
+      icon: <FiAward className="w-4 h-4" />,
       path: "/book-of-month",
-      description: "Featured monthly selection"
+      description: "Featured monthly selection",
     },
-    { 
-      name: "Reading Lists", 
-      icon: <FiBookmark className="w-4 h-4" />, 
+    {
+      name: "Reading Lists",
+      icon: <FiBookmark className="w-4 h-4" />,
       path: "/reading-lists",
-      description: "Curated collections"
+      description: "Curated collections",
     },
-    { 
-      name: "Author Spotlights", 
-      icon: <FiUser className="w-4 h-4" />, 
+    {
+      name: "Author Spotlights",
+      icon: <FiUser className="w-4 h-4" />,
       path: "/authors",
-      description: "Meet your favorite authors"
+      description: "Meet your favorite authors",
     },
-    { 
-      name: "Book Clubs", 
-      icon: <FiBookOpen className="w-4 h-4" />, 
+    {
+      name: "Book Clubs",
+      icon: <FiBookOpen className="w-4 h-4" />,
       path: "/book-clubs",
-      description: "Join reading communities"
+      description: "Join reading communities",
+    },
+  ];
+
+  // Sample notifications - replace with real data when available
+  const notifications = [
+    {
+      id: 1,
+      title: "New comment on your review",
+      subtitle: "2 hours ago",
+      path: "/dashboard",
+    },
+    {
+      id: 2,
+      title: "Price drop on a wishlist item",
+      subtitle: "1 day ago",
+      path: "/dashboard",
+    },
+    {
+      id: 3,
+      title: "New book added to 'Sci-Fi'",
+      subtitle: "3 days ago",
+      path: "/dashboard",
     },
   ];
 
@@ -166,10 +268,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="relative"
-            >
+            <motion.div whileHover={{ scale: 1.05 }} className="relative">
               <img
                 src={navicon}
                 alt="Bookify"
@@ -193,8 +292,8 @@ const Navbar = () => {
             </Link> */}
 
             {/* Categories Dropdown */}
-            <div 
-              className="relative" 
+            <div
+              className="relative"
               ref={categoriesMenuRef}
               onMouseEnter={() => setIsCategoriesOpen(true)}
               onMouseLeave={() => setIsCategoriesOpen(false)}
@@ -202,7 +301,11 @@ const Navbar = () => {
               <button className="flex items-center space-x-2 text-gray-700 hover:text-indigo-600 transition-colors font-medium">
                 <FiList className="w-4 h-4" />
                 <span>Categories</span>
-                <FiChevronDown className={`w-4 h-4 transition-transform ${isCategoriesOpen ? 'rotate-180' : ''}`} />
+                <FiChevronDown
+                  className={`w-4 h-4 transition-transform ${
+                    isCategoriesOpen ? "rotate-180" : ""
+                  }`}
+                />
               </button>
 
               <AnimatePresence>
@@ -214,7 +317,9 @@ const Navbar = () => {
                     className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden"
                   >
                     <div className="p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Browse Categories</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        Browse Categories
+                      </h3>
                       <div className="grid grid-cols-2 gap-3">
                         {categories.map((category, index) => (
                           <Link
@@ -248,8 +353,8 @@ const Navbar = () => {
             </Link>
 
             {/* Discover Dropdown */}
-            <div 
-              className="relative" 
+            <div
+              className="relative"
               ref={discoverMenuRef}
               onMouseEnter={() => setIsDiscoverOpen(true)}
               onMouseLeave={() => setIsDiscoverOpen(false)}
@@ -257,7 +362,11 @@ const Navbar = () => {
               <button className="flex items-center space-x-2 text-gray-700 hover:text-indigo-600 transition-colors font-medium">
                 <FiTrendingUp className="w-4 h-4" />
                 <span>Discover</span>
-                <FiChevronDown className={`w-4 h-4 transition-transform ${isDiscoverOpen ? 'rotate-180' : ''}`} />
+                <FiChevronDown
+                  className={`w-4 h-4 transition-transform ${
+                    isDiscoverOpen ? "rotate-180" : ""
+                  }`}
+                />
               </button>
 
               <AnimatePresence>
@@ -269,7 +378,9 @@ const Navbar = () => {
                     className="absolute top-full left-0 mt-2 w-96 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden"
                   >
                     <div className="p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Discover More</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        Discover More
+                      </h3>
                       <div className="grid grid-cols-1 gap-2">
                         {discoverItems.map((item, index) => (
                           <Link
@@ -350,13 +461,69 @@ const Navbar = () => {
               </span>
             </button>
 
-            {/* Notifications */}
-            <button className="hidden md:block p-2 text-gray-600 hover:text-indigo-600 transition-colors relative">
-              <FiBell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 text-xs font-bold text-white bg-indigo-500 rounded-full h-4 w-4 flex items-center justify-center">
-                2
-              </span>
-            </button>
+            {/* Notifications (hover to open) */}
+            <div
+              className="relative"
+              ref={notificationsMenuRef}
+              onMouseEnter={() => setIsNotificationsOpen(true)}
+              onMouseLeave={() => setIsNotificationsOpen(false)}
+            >
+              <button
+                aria-haspopup="true"
+                aria-expanded={isNotificationsOpen}
+                className="hidden md:block p-2 text-gray-600 hover:text-indigo-600 transition-colors relative"
+              >
+                <FiBell className="w-5 h-5" />
+                <span className="absolute -top-1 -right-1 text-xs font-bold text-white bg-indigo-500 rounded-full h-4 w-4 flex items-center justify-center">
+                  {notifications.length}
+                </span>
+              </button>
+
+              <AnimatePresence>
+                {isNotificationsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50"
+                  >
+                    <div className="p-4">
+                      <h4 className="text-sm font-semibold text-gray-900">
+                        Notifications
+                      </h4>
+                      <div className="mt-2 space-y-2">
+                        {notifications.map((n) => (
+                          <Link
+                            key={n.id}
+                            to={n.path}
+                            onClick={() => setIsNotificationsOpen(false)}
+                            className="flex items-start space-x-3 p-3 rounded-lg hover:bg-indigo-50 transition-colors group"
+                          >
+                            <div className="flex-1">
+                              <p className="text-sm text-gray-800 font-medium">
+                                {n.title}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {n.subtitle}
+                              </p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                      <div className="pt-3 border-t border-gray-100 mt-3">
+                        <Link
+                          to="/dashboard"
+                          onClick={() => setIsNotificationsOpen(false)}
+                          className="block text-center text-sm text-indigo-600 py-2"
+                        >
+                          View all
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Cart */}
             <button
@@ -379,9 +546,13 @@ const Navbar = () => {
                   className="flex items-center space-x-2 p-2 text-gray-700 hover:text-indigo-600 transition-colors"
                 >
                   <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
-                    {user.email?.charAt(0).toUpperCase() || 'U'}
+                    {user.email?.charAt(0).toUpperCase() || "U"}
                   </div>
-                  <FiChevronDown className={`w-4 h-4 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+                  <FiChevronDown
+                    className={`w-4 h-4 transition-transform ${
+                      isUserMenuOpen ? "rotate-180" : ""
+                    }`}
+                  />
                 </button>
 
                 <AnimatePresence>
@@ -395,11 +566,15 @@ const Navbar = () => {
                       <div className="p-4 border-b border-gray-100">
                         <div className="flex items-center space-x-3">
                           <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
-                            {user.email?.charAt(0).toUpperCase() || 'U'}
+                            {user.email?.charAt(0).toUpperCase() || "U"}
                           </div>
                           <div>
-                            <p className="font-semibold text-gray-900">{user.email}</p>
-                            <p className="text-sm text-gray-500">Premium Member</p>
+                            <p className="font-semibold text-gray-900">
+                              {user.email}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              Premium Member
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -424,7 +599,9 @@ const Navbar = () => {
                           className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-red-50 transition-colors group text-left"
                         >
                           <FiLogOut className="w-4 h-4 text-gray-500 group-hover:text-red-600" />
-                          <span className="text-gray-700 group-hover:text-red-600 font-medium">Sign Out</span>
+                          <span className="text-gray-700 group-hover:text-red-600 font-medium">
+                            Sign Out
+                          </span>
                         </button>
                       </div>
                     </motion.div>
@@ -453,7 +630,11 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="lg:hidden p-2 text-gray-600 hover:text-indigo-600 transition-colors"
             >
-              {isMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
+              {isMenuOpen ? (
+                <FiX className="w-6 h-6" />
+              ) : (
+                <FiMenu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -504,7 +685,7 @@ const Navbar = () => {
                   <FiHome className="w-5 h-5 text-indigo-600" />
                   <span className="font-medium text-gray-900">Home</span>
                 </Link>
-                
+
                 <Link
                   to="/books"
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-indigo-50 transition-colors"
@@ -525,7 +706,9 @@ const Navbar = () => {
 
                 {/* Additional Navigation Items for Mobile */}
                 <div className="border-t border-gray-200 pt-4">
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">More</h3>
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                    More
+                  </h3>
                   <div className="space-y-2">
                     {additionalNavItems.map((item, index) => (
                       <Link
@@ -534,7 +717,9 @@ const Navbar = () => {
                         className="flex items-center space-x-3 p-3 rounded-lg hover:bg-indigo-50 transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <span className="font-medium text-gray-900">{item.name}</span>
+                        <span className="font-medium text-gray-900">
+                          {item.name}
+                        </span>
                       </Link>
                     ))}
                   </div>
@@ -543,7 +728,9 @@ const Navbar = () => {
 
               {/* Discover Section */}
               <div className="border-t border-gray-200 pt-4">
-                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Discover</h3>
+                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                  Discover
+                </h3>
                 <div className="space-y-2">
                   {discoverItems.map((item, index) => (
                     <Link
@@ -552,12 +739,14 @@ const Navbar = () => {
                       className="flex items-start space-x-3 p-3 rounded-lg hover:bg-indigo-50 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <div className="text-indigo-600 mt-1">
-                        {item.icon}
-                      </div>
+                      <div className="text-indigo-600 mt-1">{item.icon}</div>
                       <div className="flex-1">
-                        <span className="font-medium text-gray-900 block">{item.name}</span>
-                        <span className="text-sm text-gray-500">{item.description}</span>
+                        <span className="font-medium text-gray-900 block">
+                          {item.name}
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          {item.description}
+                        </span>
                       </div>
                     </Link>
                   ))}
@@ -566,7 +755,9 @@ const Navbar = () => {
 
               {/* Quick Links */}
               <div className="border-t border-gray-200 pt-4">
-                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick Links</h3>
+                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                  Quick Links
+                </h3>
                 <div className="space-y-2">
                   {quickLinks.map((link, index) => (
                     <Link
@@ -576,7 +767,9 @@ const Navbar = () => {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {link.icon}
-                      <span className="font-medium text-gray-900">{link.name}</span>
+                      <span className="font-medium text-gray-900">
+                        {link.name}
+                      </span>
                     </Link>
                   ))}
                 </div>
@@ -594,7 +787,9 @@ const Navbar = () => {
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {item.icon}
-                        <span className="font-medium text-gray-900">{item.name}</span>
+                        <span className="font-medium text-gray-900">
+                          {item.name}
+                        </span>
                       </Link>
                     ))}
                     <button
@@ -629,11 +824,10 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-  <CartSidebar />
-  <WishlistSidebar />
+      <CartSidebar />
+      <WishlistSidebar />
     </header>
   );
 };
 
 export default Navbar;
-
