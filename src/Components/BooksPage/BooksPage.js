@@ -47,12 +47,7 @@ const BooksPage = () => {
     ...new Set(books.map((book) => book.genre).filter(Boolean)),
   ];
 
-  // category counts for badges
-  const categoryCounts = books.reduce((acc, b) => {
-    const g = b.genre || "Unknown";
-    acc[g] = (acc[g] || 0) + 1;
-    return acc;
-  }, {});
+  // (Category counts removed — badge UI currently unused)
 
   const handleAddToCart = (book) => {
     dispatch(addToCart(book));
@@ -182,14 +177,24 @@ const BooksPage = () => {
   }, [selectedCategory]);
 
   // Filter books based on search term
+  // Use defensive normalization to avoid runtime errors when fields are missing
   const filteredBooks = books.filter((book) => {
+    const title = (book.title || book.original_title || "")
+      .toString()
+      .toLowerCase();
+    const author = (book.author || book.authors || "").toString().toLowerCase();
+    const genre = (book.genre || book.category || "").toString().toLowerCase();
+    const term = searchTerm.toLowerCase();
+
     const matchesSearch =
-      book.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.author?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.genre?.toLowerCase().includes(searchTerm.toLowerCase());
+      term === ""
+        ? true
+        : title.includes(term) || author.includes(term) || genre.includes(term);
 
     const matchesCategory =
-      selectedCategory === "All" || book.genre === selectedCategory;
+      selectedCategory === "All" ||
+      book.genre === selectedCategory ||
+      book.category === selectedCategory;
 
     return matchesSearch && matchesCategory;
   });
@@ -304,10 +309,6 @@ const BooksPage = () => {
                         c.toLowerCase().includes(categorySearch.toLowerCase())
                     )
                     .map((category) => {
-                      const count =
-                        category === "All"
-                          ? books.length
-                          : categoryCounts[category] || 0;
                       const active = selectedCategory === category;
                       return (
                         <button
