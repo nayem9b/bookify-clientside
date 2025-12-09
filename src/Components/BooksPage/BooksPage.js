@@ -28,7 +28,7 @@ const BooksPage = () => {
   const [sortOption, setSortOption] = useState("none"); // 'none' | 'price-asc' | 'price-desc'
   const [priceFilter, setPriceFilter] = useState(null); // max price filter
   const [maxAvailablePrice, setMaxAvailablePrice] = useState(0);
-  
+
   const dispatch = useDispatch();
 
   // Extract unique categories from books
@@ -61,6 +61,7 @@ const BooksPage = () => {
   console.log(user);
 
   const handleAddToWishlist = async (book) => {
+    console.log("Adding to wishlist:", user);
     // Require authentication
     if (!user || (!user.uid && !user.id && !user._id)) {
       toast.error("Please sign in to add items to your wishlist");
@@ -444,7 +445,7 @@ const BooksPage = () => {
             <div className="flex items-center gap-3">
               <span className="text-sm font-medium text-slate-600">Show:</span>
 
-              <div className="relative">
+              <div className="relative group">
                 <select
                   value={itemsPerPage}
                   onChange={(e) => {
@@ -470,7 +471,7 @@ const BooksPage = () => {
                 {/* Custom dropdown arrow */}
                 <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
                   <svg
-                    className="h-4 w-4 text-slate-500"
+                    className="h-4 w-4 text-slate-500 transition-transform duration-200 group-hover:text-indigo-600"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"

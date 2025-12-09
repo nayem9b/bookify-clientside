@@ -111,7 +111,7 @@ const Payment = () => {
       dispatch(clearCart());
 
       // Redirect to success page or home with success message
-      navigate("/orders", {
+      navigate("/dashboard/myorders", {
         state: {
           message: "Your order has been placed successfully!",
           orderDetails: {

@@ -55,12 +55,12 @@ const DashboardLayout = () => {
       icon: <FiHeart className="w-5 h-5" />,
       visible: true,
     },
-    {
-      title: "My Products",
-      path: "/dashboard/myproducts",
-      icon: <FiPackage className="w-5 h-5" />,
-      visible: true,
-    },
+    // {
+    //   title: "My Products",
+    //   path: "/dashboard/myproducts",
+    //   icon: <FiPackage className="w-5 h-5" />,
+    //   visible: true,
+    // },
     {
       title: "Add Product",
       path: "/dashboard/addaproduct",

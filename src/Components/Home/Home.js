@@ -122,8 +122,8 @@ const Home = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              Disco Your Next{" "}
-              <span className="text-yellow-300">Favorite</span> Book
+              Disco Your Next <span className="text-yellow-300">Favorite</span>{" "}
+              Book
             </motion.h1>
 
             <motion.p
@@ -208,9 +208,8 @@ const Home = () => {
                   alt="Reading"
                   className="rounded-lg max-w-sm w-full h-auto shadow-lg"
                 />
-                
+
                 <div className="absolute -bottom-4 -right-4 bg-white p-3 rounded-full shadow-xl">
-                  
                   <div className="bg-indigo-600 text-white p-2 rounded-full">
                     <FiBookOpen className="h-6 w-6" />
                   </div>
@@ -1130,7 +1129,13 @@ const Home = () => {
                     whileTap={{ scale: 0.95 }}
                     className="px-4 py-2 bg-gradient-to-r from-violet-500 to-purple-500 text-white text-sm font-semibold rounded-lg hover:shadow-lg transition-all duration-300"
                   >
-                    Join Now
+                    <a
+                      href="https://github.com/nayem9b"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Join Now
+                    </a>
                   </motion.button>
                 </div>
               </motion.div>

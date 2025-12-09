@@ -136,7 +136,36 @@ export default function BookDetailsPage() {
             <Badge label={`Language: ${book.language || "English"}`} />
           </section>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-6">
+            {/* Primary Action: Add to Cart */}
+            <motion.button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleAddToCart(book);
+              }}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="group relative flex items-center justify-center gap-3 rounded-xl 
+             bg-indigo-600 text-white px-6 py-3 font-semibold 
+             shadow-lg hover:shadow-xl hover:bg-indigo-700 
+             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2
+             transition-all duration-200 ease-out flex-1 sm:flex-initial"
+            >
+              <FaShoppingCart
+                aria-hidden
+                className="text-white transition-transform duration-200 group-hover:scale-110"
+              />
+              <span className="font-medium tracking-wide">Add to Cart</span>
+
+              {/* Subtle glow effect */}
+              <motion.span
+                layoutId="cart-glow"
+                className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/20 to-violet-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              />
+            </motion.button>
+
+            {/* Secondary Action: Wishlist */}
             <button
               aria-label="Add to wishlist"
               onClick={async (e) => {
@@ -164,7 +193,9 @@ export default function BookDetailsPage() {
                   const API = process.env.REACT_APP_API_URL || "/api";
                   const userId = user?.uid || user?.id || user?.email;
                   if (!userId) {
-                    toast.error("Unable to determine user id. Please sign in again.");
+                    toast.error(
+                      "Unable to determine user id. Please sign in again."
+                    );
                     setWishlistLoading(false);
                     return;
                   }
@@ -189,7 +220,9 @@ export default function BookDetailsPage() {
 
                   if (!res.ok) {
                     const errText = await res.text().catch(() => null);
-                    throw new Error(errText || `Request failed with ${res.status}`);
+                    throw new Error(
+                      errText || `Request failed with ${res.status}`
+                    );
                   }
 
                   // optionally update local UI here (e.g., set a filled heart) if API returns data
@@ -203,48 +236,21 @@ export default function BookDetailsPage() {
                 }
               }}
               disabled={wishlistLoading}
-              className={`ml-auto sm:ml-0 p-3 rounded-lg transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-indigo-300 ${
-                wishlistLoading
-                  ? "bg-indigo-50 text-indigo-300 cursor-not-allowed"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-              }`}
+              className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-gray-200 bg-white text-gray-700 font-medium 
+             shadow-sm hover:shadow-md hover:border-gray-300 hover:bg-gray-50
+             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2
+             transition-all duration-200 ease-out ${
+               wishlistLoading ? "opacity-50 cursor-not-allowed" : ""
+             }`}
             >
-              <FaHeart aria-hidden />
-            </button>
-            <motion.button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleAddToCart(book);
-              }}
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="relative flex items-center justify-center gap-2 rounded-xl 
-             bg-white text-gray-900 px-5 py-2.5 border border-gray-200 
-             shadow-sm hover:shadow-md hover:border-gray-300 
-             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
-             transition-all duration-200 ease-out"
-            >
-              <FaShoppingCart
+              <FaHeart
                 aria-hidden
-                className="text-gray-600 transition-transform duration-200 group-hover:scale-110"
+                className={`transition-colors duration-200 ${
+                  wishlistLoading ? "animate-pulse" : ""
+                }`}
               />
-              <span className="font-medium tracking-wide">Add to Cart</span>
-
-              {/* subtle background motion glow */}
-              <motion.span
-                layoutId="cart-glow"
-                className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/25 to-violet-500/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              />
-            </motion.button>
-
-            {/* <motion.button
-              onClick={handleCheckout}
-              className="px-5 py-3 rounded-xl border border-slate-200 bg-white font-semibold text-slate-900 shadow-sm"
-              whileHover={{ scale: 1.02 }}
-            >
-              Buy Now
-            </motion.button> */}
+              <span className="hidden sm:inline">Add to Wishlist</span>
+            </button>
           </div>
 
           <nav className="flex gap-4 border-b border-slate-100">

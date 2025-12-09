@@ -31,6 +31,7 @@ import AddProduct from "../AddAProduct/AddProduct";
 import AllProducts from "../AllProducts/AllProducts";
 import About from "../About/About";
 import Contact from "../Contact/Contact";
+import Settings from "../Settings/Settings";
 
 export const router = createBrowserRouter([
   {
@@ -88,6 +89,14 @@ export const router = createBrowserRouter([
       {
         path: "/blogs",
         element: <Blogs></Blogs>,
+      },
+      {
+        path: "/settings",
+        element: (
+          <PrivateRoute>
+            <Settings />
+          </PrivateRoute>
+        ),
       },
     ],
   },
