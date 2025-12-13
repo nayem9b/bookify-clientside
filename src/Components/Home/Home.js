@@ -122,7 +122,7 @@ const Home = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              Disco Your Next <span className="text-yellow-300">Favorite</span>{" "}
+              Discover Your Next <span className="text-yellow-300">Favorite</span>{" "}
               Book
             </motion.h1>
 
@@ -153,14 +153,10 @@ const Home = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900 font-medium px-6 py-2.5 rounded-lg transition-all duration-200 flex items-center gap-2 shadow-lg"
-              >
+              <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900 font-medium px-6 py-2.5 rounded-lg flex items-center gap-2 shadow-lg">
                 Search
                 <FiArrowRight className="h-4 w-4" />
-              </motion.button>
+              </button>
             </motion.div>
 
             <motion.div
